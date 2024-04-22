@@ -1,0 +1,15 @@
+<!ELEMENT Taches (Tache+)>
+
+		<!ELEMENT Tache (Descriptif, Echeance, Priorite, Duree, Progression?, SousTaches?)>
+		<!ATTLIST Tache
+				type (booléenne | complexe | simple) >
+
+		<!ELEMENT Descriptif (#PCDATA)>
+		<!ELEMENT Echeance (#PCDATA)>
+		<!ELEMENT Priorite (#PCDATA)>
+		<!ELEMENT Duree (#PCDATA)>
+		<!ELEMENT Progression (#PCDATA)>
+		<!ELEMENT SousTaches (Tache*)>
+
+		<!ATTLIST Priorite
+				value (urgent | normal | secondaire) >

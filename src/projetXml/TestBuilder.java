@@ -21,22 +21,41 @@ public class TestBuilder {
         System.out.println("Deadline: " + tache.getDeadline());
         System.out.println("Priorite: " + tache.getPriorite());
         System.out.println("__________________________________________________________ " );  */
-        TodoListImpl todoList = new TodoListImpl();
 
-        // Créez une instance de votre factory
-        TacheFactory factory = new concreateTacheFactoryBuilder();
 
-        // Créez une instance de votre builder de tâches simples
-        TacheBuilder simpleTaskBuilder = new SimpleTacheBuilder();
-        simpleTaskBuilder.setDescription("Faire les courses")
-                            .setDateEcheance(LocalDate.now())
-                            .setPriorite(Priorite.HAUTE);
-        Tache simpleTask = simpleTaskBuilder.build();
-        todoList.addTask(simpleTask);
+    	  TacheFactory factory = new concreateTacheFactoryBuilder();
 
-        todoList.displayTasks();
+          // Instancie la TodoList
+          TodoListImpl todoList = new TodoListImpl();
 
-    	
+          // Utilise le SimpleTacheBuilder pour créer une tâche simple
+          SimpleTacheBuilder simpleTacheBuilder = new SimpleTacheBuilder(factory);
+          Tache simpleTache1 = simpleTacheBuilder
+              .setDescription("Example Task")
+              .setDateEcheance(LocalDate.now().plusDays(1))
+              .setPriorite(Priorite.MOYENNE)
+              .build();
+          
+          Tache simpleTache2 = simpleTacheBuilder
+                  .setDescription("Example Task 2")
+                  .setDateEcheance(LocalDate.now().plusDays(1))
+                  .setPriorite(Priorite.MOYENNE)
+                  .build();
+
+
+          // Ajoute la tâche à la TodoList
+          todoList.addTask(simpleTache1);
+          todoList.addTask(simpleTache2);
+          // Affiche la TodoList
+          System.out.println("Before Removing:");
+          todoList.displayTasks();
+
+          // Supprime la tâche de la TodoList
+          todoList.removeTask(simpleTache1);
+
+          // Affiche la TodoList après suppression
+          System.out.println("\nAfter Removing:");
+          todoList.displayTasks();
     	
     	
     	

@@ -10,6 +10,10 @@ public class SimpleTacheBuilder implements TacheBuilder {
     private Priorite priorite;
     private int dureeEstimee;
     private int progress;
+    
+    public SimpleTacheBuilder(TacheFactory factory) {
+        this.factory = factory;
+    }
 
     @Override
     public TacheBuilder setDescription(String description) {

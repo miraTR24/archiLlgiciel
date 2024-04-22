@@ -11,6 +11,10 @@ public class ComplexTacheBuilder implements TacheBuilder {
     private LocalDate dateEcheance;
     private Priorite priorite;
     private List<Tache> subtasks = new ArrayList<>();
+    
+    public ComplexTacheBuilder(TacheFactory factory) {
+        this.factory = factory;
+    }
 
     @Override
     public TacheBuilder setDescription(String description) {

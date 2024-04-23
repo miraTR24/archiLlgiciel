@@ -12,7 +12,7 @@ public class XMLParser {
             // Chargement du document XML
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File("xml/ToDoList.xml"));
+            Document document = builder.parse(new File("xml/todoList2.xml"));
 
             // Récupération de la racine
             Element root = document.getDocumentElement();

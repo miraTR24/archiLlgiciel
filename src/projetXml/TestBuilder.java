@@ -57,7 +57,6 @@ public class TestBuilder {
           System.out.println("\nAfter Removing:");
           todoList.displayTasks();
     	
-    	*/
     	
     	
     	
@@ -84,5 +83,17 @@ public class TestBuilder {
 
         // Affichez la liste des tâches
         todoList.displayTasks();
+    	*/
+    	
+    	   TodoListImpl todoList = new TodoListImpl();
+           
+           // Appel du parseur XML pour charger les tâches depuis le fichier XML
+           XMLParser.parseXml(todoList);
+
+           // Affichage de la TodoList dans la console
+           todoList.displayTasks();
+    	
+    	
+    	
     }
 }

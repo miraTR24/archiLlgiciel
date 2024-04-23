@@ -30,6 +30,10 @@ public class ComplexTache implements Tache {
     public Priorite getPriorite() {
         return priorite;
     }
+    
+    public List<Tache> getSubTaches() {
+        return subTaches;
+    }
 
     /*
     public int getEstimatedDuration() {

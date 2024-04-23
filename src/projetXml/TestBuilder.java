@@ -1,11 +1,18 @@
 package projetXml;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 public class TestBuilder {
     public static void main(String[] args) {
+    	
+    	
        /* 
         * 
         * TacheFactory factory = new concreateTacheFactoryBuilder(); // Instance de l'usine
@@ -61,28 +68,36 @@ public class TestBuilder {
     	
     	
     	
-    	
-    	TodoListImpl todoList = new TodoListImpl();
+        // Créez une nouvelle instance de TodoList
+        TodoListImpl todoList = new TodoListImpl();
 
-        // Créez une instance de votre factory
-        TacheFactory factory = new concreateTacheFactoryBuilder();
+        // Créez des tâches simples
+        Tache simpleTask1 = new SimpleTache("Faire les courses", LocalDate.now().plusDays(1), Priorite.MOYENNE, 1, 50);
+        Tache simpleTask2 = new SimpleTache("Nettoyer la maison", LocalDate.now().plusDays(2), Priorite.BASSE, 2, 20);
 
-        // Créez une liste de sous-tâches
+        // Ajoutez des sous-tâches à une tâche complexe
         List<Tache> subTasks = new ArrayList<>();
-        subTasks.add(factory.createSimpleTache("Acheter des ingrédients", LocalDate.now().plusDays(1), Priorite.MOYENNE, 0, 0));
-        subTasks.add(factory.createSimpleTache("Préparer le dîner", LocalDate.now().plusDays(2), Priorite.HAUTE, 0, 0));
-        subTasks.add(factory.createSimpleTache("Inviter des amis", LocalDate.now().plusDays(3), Priorite.BASSE, 0, 0));
+        subTasks.add(new SimpleTache("Préparer le dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 30));
+        subTasks.add(new SimpleTache("Servir le dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 10));
+        
+        // Créez une tâche complexe
+        Tache complexTask = new ComplexTache("Organiser un dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, subTasks);
 
-        // Créez une instance de votre builder de tâches complexes
-        TacheBuilder complexTaskBuilder = new ComplexTacheBuilder(factory);
-        complexTaskBuilder.setDescription("Organiser un dîner")
-                            .setDateEcheance(LocalDate.now().plusDays(3))
-                            .setPriorite(Priorite.HAUTE)
-                            .addSubtask(factory.createTacheComplexe("Préparer le dîner", LocalDate.now().plusDays(2), Priorite.HAUTE, subTasks));
-        Tache complexTask = complexTaskBuilder.build();
+        // Ajoutez les tâches à la TodoList
+        todoList.addTask(simpleTask1);
+        todoList.addTask(simpleTask2);
         todoList.addTask(complexTask);
 
         // Affichez la liste des tâches
         todoList.displayTasks();
+
+        // Utilisez ToDoListXmlGenerator pour générer le fichier XML
+        ToDoListXmlGenerator xmlGenerator = new ToDoListXmlGenerator();
+        String xmlFilePath = "ToDoList.xml"; // Chemin du fichier XML à créer
+
+        xmlGenerator.generateXml(todoList, xmlFilePath); // Génération du fichier XML
+
+        // Affichez un message de confirmation
+        System.out.println("XML file created: " + new File(xmlFilePath).getAbsolutePath());
     }
 }

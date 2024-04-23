@@ -15,6 +15,7 @@ public class TestBuilder {
         // Créez des tâches simples
         Tache simpleTask1 = new SimpleTache("Faire les courses", LocalDate.now().plusDays(1), Priorite.MOYENNE, 1, 50);
         Tache simpleTask2 = new SimpleTache("Nettoyer la maison", LocalDate.now().plusDays(2), Priorite.BASSE, 2, 20);
+        Tache boolTask = new BoolTache("Nettoyer la maison", LocalDate.now().plusDays(2), Priorite.BASSE,false);
 
         // Ajoutez des sous-tâches à une tâche complexe
         List<Tache> subTasks = new ArrayList<>();
@@ -27,6 +28,7 @@ public class TestBuilder {
         // Ajoutez les tâches à la TodoList
         todoList.addTask(simpleTask1);
         todoList.addTask(simpleTask2);
+        todoList.addTask(boolTask);
         todoList.addTask(complexTask);
 
         // Affichez la liste des tâches

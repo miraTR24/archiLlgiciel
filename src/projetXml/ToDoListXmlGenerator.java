@@ -64,7 +64,7 @@ public class ToDoListXmlGenerator {
             appendTextElement(doc, booleanTaskElement, "description", booleanTask.getDescription());
             appendTextElement(doc, booleanTaskElement, "deadline", booleanTask.getDeadline().toString());
             appendTextElement(doc, booleanTaskElement, "priorite", booleanTask.getPriorite().toString());
-           // appendTextElement(doc, booleanTaskElement, "isCompleted", String.valueOf(booleanTask.isCompleted()));
+            appendTextElement(doc, booleanTaskElement, "isCompleted", String.valueOf(booleanTask.isCompleted()));
 
             parentElement.appendChild(booleanTaskElement);
         } else if (task instanceof ComplexTache) {

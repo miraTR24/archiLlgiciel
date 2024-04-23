@@ -29,6 +29,16 @@ public class BoolTache implements Tache {
     public Priorite getPriorite() {
         return priorite;
     }
+    
+    // Getter pour isCompleted
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    // Setter pour isCompleted
+    public void setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 
 
 }

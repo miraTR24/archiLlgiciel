@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE todoList SYSTEM "todoList.dtd" >
+<todoList>
+  <simpleTask>
+    <description>description</description>
+    <deadline>deadline</deadline>
+    <priorite>priorite</priorite>
+    <estimatedDuration>estimatedDuration</estimatedDuration>
+    <progress>progress</progress>
+  </simpleTask>
+</todoList>

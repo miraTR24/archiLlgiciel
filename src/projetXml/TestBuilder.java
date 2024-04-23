@@ -18,7 +18,7 @@ public class TestBuilder {
 
         // Ajoutez des sous-tâches à une tâche complexe
         List<Tache> subTasks = new ArrayList<>();
-        subTasks.add(new SimpleTache("Préparer le dîner32", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 30));
+        subTasks.add(new SimpleTache("Préparer le dîner3", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 30));
         subTasks.add(new SimpleTache("Servir le dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 10));
         
         // Créez une tâche complexe
@@ -34,7 +34,7 @@ public class TestBuilder {
 
         // Utilisez ToDoListXmlGenerator pour générer le fichier XML
         ToDoListXmlGenerator xmlGenerator = new ToDoListXmlGenerator();
-        String xmlFilePath = "ToDoList.xml"; // Chemin du fichier XML à créer
+        String xmlFilePath = "xml/ToDoList.xml"; // Chemin du fichier XML à créer
 
         xmlGenerator.generateXml(todoList, xmlFilePath); // Génération du fichier XML
 

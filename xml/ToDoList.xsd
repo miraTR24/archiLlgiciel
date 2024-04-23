@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Definition des types complexes -->
+  <xs:complexType name="simpleTaskType">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="deadline" type="xs:date"/>
+      <xs:element name="priorite">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="HAUTE"/>
+            <xs:enumeration value="MOYENNE"/>
+            <xs:enumeration value="BASSE"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="estimatedDuration" type="xs:int"/>
+      <xs:element name="progress" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="booleanTaskType">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="deadline" type="xs:date"/>
+      <xs:element name="priorite">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="HAUTE"/>
+            <xs:enumeration value="MOYENNE"/>
+            <xs:enumeration value="BASSE"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="isCompleted" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="complexTaskType">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="deadline" type="xs:date"/>
+      <xs:element name="priorite">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="HAUTE"/>
+            <xs:enumeration value="MOYENNE"/>
+            <xs:enumeration value="BASSE"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="progress" type="xs:int"/> <!-- Barre de progression globale -->
+      <xs:element name="subTasks" type="subTasksType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subTasksType">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="simpleTask"/>
+        <xs:element ref="booleanTask"/>
+        <xs:element ref="complexTask"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Definition des elements racine -->
+  <xs:element name="todoList">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="simpleTask"/>
+        <xs:element ref="booleanTask"/>
+        <xs:element ref="complexTask"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Definition des elements -->
+  <xs:element name="simpleTask" type="simpleTaskType"/>
+  <xs:element name="booleanTask" type="booleanTaskType"/>
+  <xs:element name="complexTask" type="complexTaskType"/>
+
+</xs:schema>

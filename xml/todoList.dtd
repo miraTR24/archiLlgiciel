@@ -1,0 +1,14 @@
+<!ELEMENT todoList (simpleTask* | booleanTask* | complexTask*)>
+
+<!ELEMENT simpleTask (description, deadline, priorite, estimatedDuration, progress)>
+<!ELEMENT booleanTask (description, deadline, priorite, isCompleted)>
+<!ELEMENT complexTask (description, deadline, priorite, subTasks)>
+
+<!ELEMENT subTasks (simpleTask* | booleanTask* | complexTask*)>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT deadline (#PCDATA)>
+<!ELEMENT priorite (#PCDATA)>
+<!ELEMENT estimatedDuration (#PCDATA)>
+<!ELEMENT progress (#PCDATA)>
+<!ELEMENT isCompleted (#PCDATA)>

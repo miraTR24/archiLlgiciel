@@ -22,7 +22,7 @@ public class TestBuilder {
         System.out.println("Priorite: " + tache.getPriorite());
         System.out.println("__________________________________________________________ " );  */
 
-
+    	/*  èèèèèèèèèèèèèèèèèèèèèèèèèèè TACHE BOOL 
     	  TacheFactory factory = new concreateTacheFactoryBuilder();
 
           // Instancie la TodoList
@@ -57,11 +57,11 @@ public class TestBuilder {
           System.out.println("\nAfter Removing:");
           todoList.displayTasks();
     	
+    	*/
     	
     	
     	
     	
-    	/*  èèèèèèèèèèèèèèèèèèèèèèèèèèè TACHE BOOL 
     	TodoListImpl todoList = new TodoListImpl();
 
         // Créez une instance de votre factory
@@ -74,7 +74,7 @@ public class TestBuilder {
         subTasks.add(factory.createSimpleTache("Inviter des amis", LocalDate.now().plusDays(3), Priorite.BASSE, 0, 0));
 
         // Créez une instance de votre builder de tâches complexes
-        TacheBuilder complexTaskBuilder = new ComplexTacheBuilder();
+        TacheBuilder complexTaskBuilder = new ComplexTacheBuilder(factory);
         complexTaskBuilder.setDescription("Organiser un dîner")
                             .setDateEcheance(LocalDate.now().plusDays(3))
                             .setPriorite(Priorite.HAUTE)
@@ -83,6 +83,6 @@ public class TestBuilder {
         todoList.addTask(complexTask);
 
         // Affichez la liste des tâches
-        todoList.displayTasks();*/
+        todoList.displayTasks();
     }
 }

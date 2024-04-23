@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE todoList SYSTEM "todoList.dtd">
-<todoList>
-    <simpleTask>
+<todoList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ToDoList.xsd">
+<simpleTask>
         <description>Faire les courses</description>
         <deadline>2024-04-23</deadline>
         <priorite>HAUTE</priorite>
@@ -18,6 +17,7 @@
         <description>Organiser un dîner</description>
         <deadline>2024-04-25</deadline>
         <priorite>BASSE</priorite>
+        <progress>25</progress> <!-- Barre de progression globale -->
         <subTasks>
             <simpleTask>
                 <description>Acheter des ingrédients</description>

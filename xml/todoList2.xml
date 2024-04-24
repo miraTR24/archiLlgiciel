@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <todoList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ToDoList.xsd">
-<simpleTask>
-        <description>Faire les courses</description>
-        <deadline>2024-04-23</deadline>
+ <simpleTask>
+    <description>Simple Task 1</description>
+    <deadline>2023-03-01</deadline>
+    <priorite>HAUTE</priorite>
+    <estimatedDuration>5</estimatedDuration>
+    <progress>2</progress>
+  </simpleTask>
+  <booleanTask>
+    <description>Boolean Task 1</description>
+    <deadline>2023-03-02</deadline>
+    <priorite>MOYENNE</priorite>
+    <estimatedDuration>10</estimatedDuration>
+    <isCompleted>true</isCompleted>
+  </booleanTask>
+  <complexTask>
+    <description>Complex Task 1</description>
+    <deadline>2023-03-03</deadline>
+    <priorite>BASSE</priorite>
+    <subTasks>
+      <simpleTask>
+        <description>Sub Task 1.1</description>
+        <deadline>2023-03-04</deadline>
         <priorite>HAUTE</priorite>
-        <estimatedDuration>30</estimatedDuration>
-        <progress>10</progress>
-    </simpleTask>
-    <booleanTask>
-        <description>Répondre aux e-mails</description>
-        <deadline>2024-04-24</deadline>
+        <estimatedDuration>3</estimatedDuration>
+        <progress>1</progress>
+      </simpleTask>
+      <booleanTask>
+        <description>Sub Task 1.2</description>
+        <deadline>2023-03-05</deadline>
         <priorite>MOYENNE</priorite>
+        <estimatedDuration>2</estimatedDuration>
         <isCompleted>false</isCompleted>
-    </booleanTask>
-    <complexTask>
-        <description>Organiser un dîner</description>
-        <deadline>2024-04-25</deadline>
-        <priorite>BASSE</priorite>
-        <progress>25</progress> <!-- Barre de progression globale -->
-        <subTasks>
-            <simpleTask>
-                <description>Acheter des ingrédients</description>
-                <deadline>2024-04-24</deadline>
-                <priorite>MOYENNE</priorite>
-                <estimatedDuration>60</estimatedDuration>
-                <progress>20</progress>
-            </simpleTask>
-            <simpleTask>
-                <description>Préparer le dîner</description>
-                <deadline>2024-04-25</deadline>
-                <priorite>HAUTE</priorite>
-                <estimatedDuration>120</estimatedDuration>
-                <progress>30</progress>
-            </simpleTask>
-            <booleanTask>
-                <description>Inviter des amis</description>
-                <deadline>2024-04-26</deadline>
-                <priorite>BASSE</priorite>
-                <isCompleted>false</isCompleted>
-            </booleanTask>
-        </subTasks>
-    </complexTask>
+      </booleanTask>
+    </subTasks>
+    <progress>4</progress>
+    <estimatedDuration>10</estimatedDuration>
+  </complexTask>
 </todoList>

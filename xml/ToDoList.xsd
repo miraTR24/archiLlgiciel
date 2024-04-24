@@ -33,6 +33,7 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+       <xs:element name="estimatedDuration" type="xs:int"/>
       <xs:element name="isCompleted" type="xs:boolean"/>
     </xs:sequence>
   </xs:complexType>
@@ -50,7 +51,8 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element name="progress" type="xs:int"/> <!-- Barre de progression globale -->
+      <xs:element name="estimatedDuration" type="xs:int"/>
+        <xs:element name="progress" type="xs:int"/> <!-- Barre de progression globale -->
       <xs:element name="subTasks" type="subTasksType"/>
     </xs:sequence>
   </xs:complexType>

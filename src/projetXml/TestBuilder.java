@@ -35,26 +35,24 @@ public class TestBuilder {
             // Affichez la liste des tâches
             todoList.displayTasks();
 
-            // Utilisez ToDoListXmlGenerator pour générer le fichier XML
-            ToDoListXmlGenerator xmlGenerator = new ToDoListXmlGenerator();
-            String xmlFilePath = "xml/ToDoList.xml"; // Chemin du fichier XML à créer
+            // Utilisez EnregistrerVisitor pour générer le fichier XML
+            EnregistrerVisitor visitor = new EnregistrerVisitor();
+            String xmlFilePath = "xml/ToDoList22.xml"; // Chemin du fichier XML à créer
             System.out.println("-----------------------------------------------------------------");
-            xmlGenerator.generateXml(todoList, xmlFilePath); // Génération du fichier XML
-
-            // Affichez un message de confirmation
+            
+            // Appel du visiteur pour créer le fichier XML
+            visitor.visitorTodoListImpl(todoList, xmlFilePath);
+            
             System.out.println("Fichier XML créé : " + new File(xmlFilePath).getAbsolutePath());
             
             System.out.println("-----------------------------------------------------------------");
-            
 
- 		   TodoListImpl todoList1 = new TodoListImpl();
- 	        
- 	        // Appel du parseur XML pour charger les tâches depuis le fichier XML
- 	        XMLParser.parseXml(todoList1);
+            // Recharge la TodoList à partir du fichier XML
+            TodoListImpl todoList1 = new TodoListImpl();
+            XMLParser.parseXml(todoList1);
 
- 	        // Affichage de la TodoList dans la console
- 	        todoList1.displayTasks();
-            
+            // Affichage de la TodoList dans la console
+            todoList1.displayTasks();
             
         } catch (Exception e) {
             e.printStackTrace();

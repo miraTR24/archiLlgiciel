@@ -3,6 +3,7 @@ package projetXml;
 import java.time.LocalDate;
 
 public class SimpleTache implements Tache {
+	private String name;
     private String description;
     private LocalDate deadline;
     private Priorite priorite;
@@ -39,4 +40,12 @@ public class SimpleTache implements Tache {
     public int getProgress() {
         return progress;
     }
+
+	@Override
+	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+		
+		name = pathname;
+		toDoListVisitor.visitorSimpleTache(this, pathname);
+		
+	}
 }

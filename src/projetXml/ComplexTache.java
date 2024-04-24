@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ComplexTache implements Tache {
+	private String name;
     private String description; // Descriptif court (20 caractères)
     private LocalDate deadline; // Date d'échéance
     private Priorite priorite; // Priorité
@@ -86,6 +87,14 @@ public class ComplexTache implements Tache {
         }
         return maxDeadline;
     }
+
+	@Override
+	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+		
+		name = pathname;
+		toDoListVisitor.visitorComplexTache(this, pathname);
+		
+	}
 
 
 

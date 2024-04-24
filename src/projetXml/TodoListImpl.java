@@ -3,9 +3,17 @@ package projetXml;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+
 public class TodoListImpl implements ToDoList {
 
 	  private List<Tache> tasks;
+	  private Document document;
+	  String name;
 
 	    public TodoListImpl() {
 	        this.tasks = new ArrayList<>();
@@ -51,5 +59,23 @@ public class TodoListImpl implements ToDoList {
 	            }
 	        }
 	    }
+
+		@Override
+		public void acceptVistor(ToDoListVisitor toDoList, String pathname) {
+			
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				Document document = db.newDocument();
+				this.document = document;
+				
+				name = pathname;
+				toDoList.visitorTodoListImpl(this, pathname);
+				
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+			}	
+			
+		}
 
 }

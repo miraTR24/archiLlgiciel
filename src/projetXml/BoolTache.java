@@ -3,6 +3,7 @@ package projetXml;
 import java.time.LocalDate;
 
 public class BoolTache implements Tache {
+	private String name;
     private String description;
     private LocalDate deadline;
     private Priorite priorite;
@@ -53,6 +54,15 @@ public class BoolTache implements Tache {
 	@Override
 	public int getEstimatedDuration() {
 		 return estimatedDuration;
+	}
+
+	@Override
+	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+	
+			
+			name = pathname;
+			toDoListVisitor.visitorBoolTache(this, pathname);
+		
 	}
 
 

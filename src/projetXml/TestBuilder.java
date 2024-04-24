@@ -12,7 +12,7 @@ public class TestBuilder {
             TodoListImpl todoList = new TodoListImpl();
 
             // Créez des tâches simples
-            Tache simpleTask1 = new SimpleTache("Faire les courses", LocalDate.now().plusDays(1), Priorite.MOYENNE, 1, 50);
+            Tache simpleTask1 = new SimpleTache("hahahah", LocalDate.now().plusDays(1), Priorite.MOYENNE, 1, 50);
             Tache simpleTask2 = new SimpleTache("Nettoyer la maison", LocalDate.now().plusDays(2), Priorite.BASSE, 2, 20);
 
             // Créez une tâche booléenne avec tous les paramètres
@@ -37,21 +37,21 @@ public class TestBuilder {
 
             // Utilisez EnregistrerVisitor pour générer le fichier XML
             EnregistrerVisitor visitor = new EnregistrerVisitor();
-            String xmlFilePath = "xml/ToDoList22.xml"; // Chemin du fichier XML à créer
+            String xmlFilePath = "xml/ToDoList222.xml"; // Chemin du fichier XML à créer
             System.out.println("-----------------------------------------------------------------");
             
             // Appel du visiteur pour créer le fichier XML
             visitor.visitorTodoListImpl(todoList, xmlFilePath);
             
-            System.out.println("Fichier XML créé : " + new File(xmlFilePath).getAbsolutePath());
+          //  System.out.println("Fichier XML créé : " + new File(xmlFilePath).getAbsolutePath());
             
-            System.out.println("-----------------------------------------------------------------");
+            System.out.println("----------------------------------------------heere-------------------");
 
-            // Recharge la TodoList à partir du fichier XML
             TodoListImpl todoList1 = new TodoListImpl();
-            XMLParser.parseXml(todoList1);
+            ImporterVisitor importerVisitor = new ImporterVisitor();
+            importerVisitor.visitorTodoListImpl(todoList1, xmlFilePath);
 
-            // Affichage de la TodoList dans la console
+            // Affichez la TodoList importée
             todoList1.displayTasks();
             
         } catch (Exception e) {

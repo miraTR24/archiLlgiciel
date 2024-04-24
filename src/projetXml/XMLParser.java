@@ -33,7 +33,7 @@ public class XMLParser {
         }
     }
 
-    private static Tache createTaskFromElement(Element taskElement) {
+    public static Tache createTaskFromElement(Element taskElement) {
         String taskType = taskElement.getTagName();
         switch (taskType) {
             case "simpleTask":
@@ -47,7 +47,7 @@ public class XMLParser {
         }
     }
 
-    private static Tache createSimpleTask(Element taskElement) {
+    public static Tache createSimpleTask(Element taskElement) {
         String description = taskElement.getElementsByTagName("description").item(0).getTextContent();
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
@@ -56,7 +56,7 @@ public class XMLParser {
         return new SimpleTache(description, deadline, priorite, estimatedDuration, progress);
     }
 
-    private static Tache createBooleanTask(Element taskElement) {
+    public static Tache createBooleanTask(Element taskElement) {
         String description = taskElement.getElementsByTagName("description").item(0).getTextContent();
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
@@ -65,7 +65,7 @@ public class XMLParser {
         return new BoolTache(description, deadline, priorite, estimatedDuration,0,isCompleted);
     }
     
-    private static Tache createComplexTask(Element taskElement) {
+    public static Tache createComplexTask(Element taskElement) {
         // Récupération des éléments de base de la tâche
         String description = taskElement.getElementsByTagName("description").item(0).getTextContent();
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());

@@ -10,6 +10,8 @@ public class ComplexTacheBuilder implements TacheBuilder {
     private String description;
     private LocalDate dateEcheance;
     private Priorite priorite;
+    private int estimatedDuration; 
+    private int progress; 
     private List<Tache> subtasks = new ArrayList<>();
     
     public ComplexTacheBuilder(TacheFactory factory) {
@@ -29,11 +31,22 @@ public class ComplexTacheBuilder implements TacheBuilder {
     }
 
     @Override
+    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+        this.estimatedDuration = estimatedDuration;
+        return this;
+    }
+    @Override
     public TacheBuilder setPriorite(Priorite priorite) {
         this.priorite = priorite;
         return this;
     }
-
+    
+    @Override
+    public TacheBuilder setProgress(int progress) {
+        this.progress = progress;
+        return this;
+    }
+    
     @Override
     public TacheBuilder addSubtask(Tache subtask) {
         this.subtasks.add(subtask);
@@ -42,6 +55,6 @@ public class ComplexTacheBuilder implements TacheBuilder {
 
     @Override
     public Tache build() {
-        return factory.createTacheComplexe(description, dateEcheance, priorite, subtasks);
+        return factory.createTacheComplexe(description, dateEcheance, priorite,estimatedDuration,progress, subtasks);
     }
 }

@@ -8,9 +8,11 @@ public class BooleanTacheBuilder implements TacheBuilder {
     private String description;
     private LocalDate dateEcheance;
     private Priorite priorite;
+    private int estimatedDuration; 
+    private int progress;
     private boolean isCompleted;
     
-    public BooleanTacheBuilder(TacheFactory factory) { // Constructeur avec TacheFactory
+    public BooleanTacheBuilder(TacheFactory factory) { 
         this.factory = factory;
     }
 
@@ -41,9 +43,22 @@ public class BooleanTacheBuilder implements TacheBuilder {
         this.isCompleted = isCompleted;
         return this;
     }
+    
+    @Override
+    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+        this.estimatedDuration = estimatedDuration;
+        return this;
+    }
+
+    @Override
+    public TacheBuilder setProgress(int progress) {
+        this.progress = progress;
+        return this;
+    }
 
     @Override
     public Tache build() {
-        return factory.createTacheBoolean(description, dateEcheance, priorite, isCompleted);
+        return factory.createTacheBoolean(description, dateEcheance, priorite,estimatedDuration,progress, isCompleted);
     }
+
 }

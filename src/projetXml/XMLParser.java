@@ -60,16 +60,21 @@ public class XMLParser {
         String description = taskElement.getElementsByTagName("description").item(0).getTextContent();
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
+        int estimatedDuration = Integer.parseInt(taskElement.getElementsByTagName("estimatedDuration").item(0).getTextContent());
+        int progress = Integer.parseInt(taskElement.getElementsByTagName("progress").item(0).getTextContent());
         boolean isCompleted = Boolean.parseBoolean(taskElement.getElementsByTagName("isCompleted").item(0).getTextContent());
-        return new BoolTache(description, deadline, priorite, isCompleted);
+        return new BoolTache(description, deadline, priorite, estimatedDuration,progress,isCompleted);
     }
-
+    
     private static Tache createComplexTask(Element taskElement) {
+        // Récupération des éléments de base de la tâche
         String description = taskElement.getElementsByTagName("description").item(0).getTextContent();
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
         int progress = Integer.parseInt(taskElement.getElementsByTagName("progress").item(0).getTextContent());
+        int estimatedDuration = Integer.parseInt(taskElement.getElementsByTagName("estimatedDuration").item(0).getTextContent());
 
+        // Récupération des sous-tâches
         NodeList subTaskNodes = taskElement.getElementsByTagName("subTasks").item(0).getChildNodes();
         TodoListImpl subTaskList = new TodoListImpl();
         for (int i = 0; i < subTaskNodes.getLength(); i++) {
@@ -81,6 +86,10 @@ public class XMLParser {
             }
         }
 
-        return new ComplexTache(description, deadline, priorite, subTaskList.getAllTasks());
+        return new ComplexTache(description, priorite, subTaskList.getAllTasks());
+
     }
+
+
+   
 }

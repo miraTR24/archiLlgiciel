@@ -8,8 +8,8 @@ public class SimpleTacheBuilder implements TacheBuilder {
     private String description;
     private LocalDate dateEcheance;
     private Priorite priorite;
-    private int dureeEstimee;
-    private int progress;
+    private int estimatedDuration; 
+    private int progress; 
     
     public SimpleTacheBuilder(TacheFactory factory) {
         this.factory = factory;
@@ -37,11 +37,25 @@ public class SimpleTacheBuilder implements TacheBuilder {
     public TacheBuilder addSubtask(Tache subtask) {
         throw new UnsupportedOperationException("Cannot add subtask to SimpleTache");
     }
+    
+    @Override
+    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+        this.estimatedDuration = estimatedDuration;
+        return this;
+    }
+
+    @Override
+    public TacheBuilder setProgress(int progress) {
+        this.progress = progress;
+        return this;
+    }
 
     @Override
     public Tache build() {
-        this.dureeEstimee = 0;
+        this.estimatedDuration = 0;
         this.progress = 0;
-        return factory.createSimpleTache(description, dateEcheance, priorite, dureeEstimee, progress);
+        return factory.createSimpleTache(description, dateEcheance, priorite, estimatedDuration, progress);
     }
+
+
 }

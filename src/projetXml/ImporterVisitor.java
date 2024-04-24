@@ -1,6 +1,9 @@
 package projetXml;
 
 import org.w3c.dom.*;
+
+import FactoryMethodParser.XMLParser;
+
 import javax.xml.parsers.*;
 import java.io.*;
 import java.time.LocalDate;
@@ -19,7 +22,7 @@ public class ImporterVisitor implements ToDoListVisitor {
             Element root = document.getDocumentElement();
 
             // Ajouter la tâche simple au TodoList
-            Tache task = XMLParser.createSimpleTask(root);
+            Tache task = XMLParser.createTaskFromElement(root);
             simpleTache = (SimpleTache) task;
 
         } catch (Exception e) {
@@ -36,7 +39,7 @@ public class ImporterVisitor implements ToDoListVisitor {
 
             Element root = document.getDocumentElement();
 
-            Tache task = XMLParser.createBooleanTask(root);
+            Tache task = XMLParser.createTaskFromElement(root);
             boolTache = (BoolTache) task;
 
         } catch (Exception e) {
@@ -53,7 +56,7 @@ public class ImporterVisitor implements ToDoListVisitor {
 
             Element root = document.getDocumentElement();
 
-            Tache task = XMLParser.createComplexTask(root);
+            Tache task = XMLParser.createTaskFromElement(root);
             complexTache = (ComplexTache) task;
 
         } catch (Exception e) {

@@ -1,3 +1,4 @@
+// TestBuilder.java
 package projetXml;
 
 import java.io.File;
@@ -39,13 +40,12 @@ public class TestBuilder {
             EnregistrerVisitor visitor = new EnregistrerVisitor();
             String xmlFilePath = "xml/ToDoList222.xml"; // Chemin du fichier XML à créer
             System.out.println("-----------------------------------------------------------------");
-            
+
             // Appel du visiteur pour créer le fichier XML
             visitor.visitorTodoListImpl(todoList, xmlFilePath);
-            
-          //  System.out.println("Fichier XML créé : " + new File(xmlFilePath).getAbsolutePath());
-            
-            System.out.println("----------------------------------------------heere-------------------");
+
+            System.out.println("Fichier XML créé : " + new File(xmlFilePath).getAbsolutePath());
+System.out.println("---------------------------------chjkhgvk,ljhgvf--------------");
 
             TodoListImpl todoList1 = new TodoListImpl();
             ImporterVisitor importerVisitor = new ImporterVisitor();
@@ -53,7 +53,7 @@ public class TestBuilder {
 
             // Affichez la TodoList importée
             todoList1.displayTasks();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -18,6 +18,9 @@
     <description>Complex Task 1</description>
     <deadline>2023-03-03</deadline>
     <priorite>BASSE</priorite>
+    <estimatedDuration>10</estimatedDuration>
+     <progress>4</progress>
+     
     <subTasks>
       <simpleTask>
         <description>Sub Task 1.1</description>
@@ -34,7 +37,6 @@
         <isCompleted>false</isCompleted>
       </booleanTask>
     </subTasks>
-    <progress>4</progress>
-    <estimatedDuration>10</estimatedDuration>
+
   </complexTask>
 </todoList>

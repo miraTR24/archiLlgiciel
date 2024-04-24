@@ -23,7 +23,7 @@ public class ToDoListXmlGenerator {
             // Créer l'élément racine <todoList>
             Element rootElement = doc.createElement("todoList");
             rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-          //  rootElement.setAttribute("xsi:noNamespaceSchemaLocation", "xml/ToDoList.xsd"); // Spécifie l'emplacement du schéma XSD
+            rootElement.setAttribute("xsi:noNamespaceSchemaLocation", "ToDoList.xsd"); // Spécifie l'emplacement du schéma XSD
             doc.appendChild(rootElement);
 
             // Parcourir les tâches de la ToDoList et les ajouter au document XML
@@ -64,6 +64,7 @@ public class ToDoListXmlGenerator {
             appendTextElement(doc, booleanTaskElement, "description", booleanTask.getDescription());
             appendTextElement(doc, booleanTaskElement, "deadline", booleanTask.getDeadline().toString());
             appendTextElement(doc, booleanTaskElement, "priorite", booleanTask.getPriorite().toString());
+            appendTextElement(doc, booleanTaskElement, "estimatedDuration", String.valueOf(booleanTask.getEstimatedDuration()));
             appendTextElement(doc, booleanTaskElement, "isCompleted", String.valueOf(booleanTask.isCompleted()));
 
             parentElement.appendChild(booleanTaskElement);
@@ -74,6 +75,8 @@ public class ToDoListXmlGenerator {
             appendTextElement(doc, complexTaskElement, "description", complexTask.getDescription());
             appendTextElement(doc, complexTaskElement, "deadline", complexTask.getDeadline().toString());
             appendTextElement(doc, complexTaskElement, "priorite", complexTask.getPriorite().toString());
+            appendTextElement(doc, complexTaskElement, "estimatedDuration", String.valueOf(complexTask.getEstimatedDuration()));
+            appendTextElement(doc, complexTaskElement, "progress", String.valueOf(complexTask.getProgress()));
           //  appendTextElement(doc, complexTaskElement, "progress", String.valueOf(complexTask.getProgress()));
 
             // Ajouter les sous-tâches

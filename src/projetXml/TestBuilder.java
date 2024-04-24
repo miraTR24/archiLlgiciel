@@ -20,7 +20,7 @@ public class TestBuilder {
 
             // Ajoutez des sous-tâches à une tâche complexe
             List<Tache> subTasks = new ArrayList<>();
-            subTasks.add(new SimpleTache("Préparer le dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 30));
+            subTasks.add(new SimpleTache("Préparer le dîner", LocalDate.now().plusDays(6), Priorite.BASSE, 1, 30));
             subTasks.add(new SimpleTache("Servir le dîner", LocalDate.now().plusDays(3), Priorite.HAUTE, 1, 10));
 
             // Créez une tâche complexe avec les sous-tâches

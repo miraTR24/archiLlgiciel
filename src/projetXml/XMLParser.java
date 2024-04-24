@@ -61,9 +61,8 @@ public class XMLParser {
         LocalDate deadline = LocalDate.parse(taskElement.getElementsByTagName("deadline").item(0).getTextContent());
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
         int estimatedDuration = Integer.parseInt(taskElement.getElementsByTagName("estimatedDuration").item(0).getTextContent());
-        int progress = Integer.parseInt(taskElement.getElementsByTagName("progress").item(0).getTextContent());
         boolean isCompleted = Boolean.parseBoolean(taskElement.getElementsByTagName("isCompleted").item(0).getTextContent());
-        return new BoolTache(description, deadline, priorite, estimatedDuration,progress,isCompleted);
+        return new BoolTache(description, deadline, priorite, estimatedDuration,0,isCompleted);
     }
     
     private static Tache createComplexTask(Element taskElement) {

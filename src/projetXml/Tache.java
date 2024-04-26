@@ -11,4 +11,5 @@ public interface Tache {
     int getProgress();
 	int getEstimatedDuration();
 	public abstract void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname);
+	void display();
 }

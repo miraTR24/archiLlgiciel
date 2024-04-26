@@ -48,4 +48,14 @@ public class SimpleTache implements Tache {
 		toDoListVisitor.visitorSimpleTache(this, pathname);
 		
 	}
+	
+	   @Override
+	    public void display() {
+	        System.out.println("Description : " + getDescription());
+	        System.out.println("Deadline : " + getDeadline());
+	        System.out.println("Priorite : " + getPriorite());
+	        System.out.println("Estimated Duration : " + getEstimatedDuration());
+	        System.out.println("Progress : " + getProgress() + "%");
+	    }
+	
 }

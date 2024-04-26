@@ -38,28 +38,14 @@ public class TodoListImpl implements ToDoList {
 	        System.out.println("=== Todo List ===");
 	        int[] index = {1};
 	        for (Tache task : tasks) {
-	            displayTaskRecursively(task, index, 0);
+	            System.out.println("Task " + index[0] + ":");
+	            task.display();
+	            index[0]++;
 	        }
 	        System.out.println("=================");
 	    }
 
-	    private void displayTaskRecursively(Tache task, int[] index, int depth) {
-	        // Préfixe pour afficher la hiérarchie
-	        String prefix = "  ".repeat(depth);
-
-	        // Afficher la tâche avec le bon niveau de profondeur
-	        System.out.println(prefix + index[0] + ". " + task.getDescription());
-
-	        index[0]++;
-
-	        if (task instanceof ComplexTache) {
-	            List<Tache> subTasks = ((ComplexTache) task).getSubTaches();
-	            for (Tache subTask : subTasks) {
-	                displayTaskRecursively(subTask, index, depth + 1);
-	            }
-	        }
-	    }
-
+	   
 		@Override
 		public void acceptVistor(ToDoListVisitor toDoList, String pathname) {
 			

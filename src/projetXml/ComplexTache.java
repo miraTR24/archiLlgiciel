@@ -95,7 +95,21 @@ public class ComplexTache implements Tache {
 		toDoListVisitor.visitorComplexTache(this, pathname);
 		
 	}
-
+	@Override
+	public void display() {
+	    System.out.println("Description : " + getDescription());
+	    System.out.println("Deadline : " + getDeadline());
+	    System.out.println("Priorite : " + getPriorite());
+	    System.out.println("Estimated Duration : " + getEstimatedDuration());
+	    System.out.println(" total Progress is  : " + getProgress() + "%");
+	    System.out.println("________________________________________________ : ");
+	    System.out.println("Subtasks : ");
+	    for (Tache subTask : subTaches) {
+	        subTask.display();
+	    }
+	    
+	    System.out.println("________________________________________________ : ");
+	}
 
 
 

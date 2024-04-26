@@ -5,6 +5,9 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import FactoryMethodParser.XMLParser;
+
+import FactoryMethodParser.XMLParser;
 
 public class TestBuilder {
     public static void main(String[] args) {
@@ -48,8 +51,8 @@ public class TestBuilder {
 System.out.println("--------------sssss--------ddddf--------------");
 
             TodoListImpl todoList1 = new TodoListImpl();
-            ImporterVisitor importerVisitor = new ImporterVisitor();
-            importerVisitor.visitorTodoListImpl(todoList1, xmlFilePath);
+            XMLParser parseXml  = new XMLParser();
+            parseXml.parseXml(todoList1, xmlFilePath);
 
             // Affichez la TodoList importée
             todoList1.displayTasks();

@@ -21,7 +21,13 @@ public class Facade implements IFacade {
 
 	@Override
 	public void loadTodoList(String pathTodoList) {
-		// TODO Auto-generated method stub
+		System.out.println("here.");
+		 TodoListImpl todoList1 = new TodoListImpl();
+         XMLParser parseXml  = new XMLParser();
+         parseXml.parseXml(todoList1, pathTodoList);
+
+         // Affichez la TodoList importée
+         todoList1.displayTasks();
 
 	}
 

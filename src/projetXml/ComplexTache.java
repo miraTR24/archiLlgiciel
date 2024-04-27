@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ComplexTache implements Tache {
+public class ComplexTache extends Tache {
+	private int id=0;
 	private String name;
     private String description; // Descriptif court (20 caractères)
     private LocalDate deadline; // Date d'échéance
@@ -17,6 +18,7 @@ public class ComplexTache implements Tache {
         if (description.length() > 20) {
             throw new IllegalArgumentException("La description ne doit pas dépasser 20 caractères.");
         }
+        this.id=Tache.idCounter++;
         this.description = description;
         this.subTaches = subTaches;
         this.priorite = priorite;
@@ -30,6 +32,11 @@ public class ComplexTache implements Tache {
         return description;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+    
     @Override
     public LocalDate getDeadline() {
         return deadline;
@@ -97,6 +104,7 @@ public class ComplexTache implements Tache {
 	}
 	@Override
 	public void display() {
+		System.out.println("Id : " + getId());
 	    System.out.println("Description : " + getDescription());
 	    System.out.println("Deadline : " + getDeadline());
 	    System.out.println("Priorite : " + getPriorite());

@@ -3,6 +3,7 @@ package Client;
 import Façade.Facade;
 import Façade.IFacade;
 
+
 public class LaunchToDoList {
 	
 	
@@ -15,57 +16,47 @@ public class LaunchToDoList {
 		// TODO Auto-generated method stub
 		
 		boolean start = false;
-        do{
-        	String msg = "    #################### TodoList Editor ##################\r\n"
-        			+ "               La commande             ===> Son Explication \r\n"
-            		+ "               New <name list>\\r\\n   ===>   Créer une nouvelle Liste de tache \r\n"
-            		+ "               Load <path list>\\r\\n  ===>   Charger une liste de tache  \r\n"
-            		+ "         Faite votre choix SVP 🤔! ";
-        	
-       
-        	// le facade 
-        	IFacade ifacade = new Facade();
-        	// la commande 
-        	String command = ifacade.choiceCommand(msg);
-        	// analyser la commande
-        	String [] commandTab = command.split(" ");
-        	
-	        // check le syntax de la commande 
-        	if(commandTab.length == 2) {
-	    	  
-		        switch(commandTab[0]){
-		        	// new playList
-		            case "NEW":
-		            case "New":
-		            case "new":
-		            	// Si le joueur ecrit un de ses 3 mots pour commencer
-		                start = true;
-		                // la methode create playList avec le nom du playList
-		                String nameToDolist =  commandTab[1];
-		        		ifacade.createTodoList(commandTab[1]);
-		        		
-		        		break;
-							                
-		            case "LOAD":    
-		            case "Load":
-		            case "load": 
-		         
-		            	// on charge le fichier xml de la list
-		            	// start = true;
-		            	// la methode load palyList avec le nom du fichier 
-		            	String pathFile =  commandTab[1];
-		 //*********************//icici
-		        		ifacade.loadTodoList(pathFile);
-		        		
-		        		
-		                break;
-		            default :
-		                System.out.println("Bad Command, Retry.");     
-		        }
-	       }else System.out.println("Bad Command, Retry.");
-        
-        }while(start!=true); 
-		
-	}
+        IFacade ifacade = new Facade(); // Interface de façade
 
+        while (!start) {
+            String msg = "    #################### TodoList Editor ##################\r\n"
+                    + "               La commande             ===> Son Explication \r\n"
+                    + "               New <name list>\\r\\n   ===>   Créer une nouvelle liste de tâches \r\n"
+                    + "               Load <path list>\\r\\n  ===>   Charger une liste de tâches \r\n"
+                    + "         Faites votre choix SVP 🤔! ";
+
+            // Obtenir la commande de l'utilisateur
+            String command = ifacade.choiceCommand(msg).trim().toLowerCase();
+            String[] commandTab = command.split(" ");
+
+            // Vérification de la syntaxe de la commande
+            if (commandTab.length == 2) {
+                String mainCommand = commandTab[0];
+
+                switch (mainCommand) {
+                    case "new":
+                        start = true;
+                        String nameTodoList = commandTab[1];
+                        ifacade.createTodoList(nameTodoList);
+                        System.out.println("Création de la TodoList: " + nameTodoList);
+                        break;
+
+                    case "load":
+                        start = true;
+                        String pathFile = commandTab[1];
+                        ifacade.loadTodoList(pathFile);
+                        System.out.println("Chargement de la TodoList depuis le fichier: " + pathFile);
+                        break;
+
+                    default:
+                        System.out.println("Commande invalide, réessayez.");
+                }
+            } else {
+                System.out.println("Commande invalide, réessayez.");
+            }
+        }
+    }
+
+	
+	 
 }

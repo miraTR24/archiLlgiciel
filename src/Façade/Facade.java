@@ -28,150 +28,81 @@ public class Facade implements IFacade {
 
          // Affichez la TodoList importée
          todoList1.displayTasks();
+         if(todoList1 != null) welcomeTodoList(pathTodoList, todoList1, 1);	
 
 	}
+
+
+	private void welcomeTodoList(String nameTodoList, ToDoList todoList, int level) {
+        boolean start = false;
+        System.out.println(" ############################################################################\r\n"
+                + "     ######## Welcome to the TodoList : " + nameTodoList + " #########\r\n"
+                + " ############################################################################\r\n");
+
+        while (!start) {
+            String msg = " ###############  ** Commands ** ###############\r\n"
+                    + "        Add             ===>  \r\n"
+                    + "        Delete          ===> you have to write *delete idTask* \r\n"
+                    + "        Modify            ===>  \r\n"
+                    + "        Save           ===>  \r\n"
+                    + "        exit  list       ===>  Exit\r\n"
+                    + "      Please choose a valid choice! ";
+
+            String command = choiceCommand(msg).trim().toLowerCase();
+            String[] commandTab = command.split(" ");
+
+            if (commandTab.length >= 1 && commandTab.length < 3) {
+                String mainCommand = commandTab[0];
+
+                switch (mainCommand) {
+                    case "add":
+                        
+                        break;
+
+                    case "delete":
+                    	String Id = commandTab[1];
+                    	todoList.removeTaskById(Integer.parseInt(Id));
+                        System.out.println("suppression de la tache numéro : " + Id);
+                        todoList.displayTasks();
+                        
+                        break;
+
+                    case "modify":
+                       
+                        break;
+
+                    case "save":
+                        
+                        
+                        break;
+
+                    
+
+                    case "exit":
+                        if (commandTab.length > 1) {
+                            System.out.println("Bad Command, Retry.");
+                        } else {
+                            System.out.println("You left the " + nameTodoList);
+                            start = true;
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Bad Command, Retry.");
+                }
+            } else {
+                System.out.println("Bad Command, Retry.");
+            }
+        }
+    }
 
 	@Override
-	public String choiceCommand(String msg) {
-	    Scanner sc = new Scanner(System.in);
+    public String choiceCommand(String msg) {
+        Scanner sc = new Scanner(System.in);
         System.out.println(msg);
-        String command = sc.nextLine();
-        return command;
-	}
+        return sc.nextLine().trim();
+    }
 
-	
-private void welcomePlayList(String nameTodoList, int level) {
-		
-		boolean start = false;
-		System.out.println(" ############################################################################\r\n"
-						 + "     ######## Welcome to the todolist : " + nameTodoList + " #########\r\n"
-						 + " ############################################################################\r\n");
-		do{
-			String msg =  " ###############  ** Commands ** ###############\r\n"
-					+ "        save in xml            ===>  Save < name file xml ex : save toto.xpl>\r\n"
-            		+ "        display list         ===>  List\r\n"
-            		+ "        enter            ===>  Enter <num sublist>\r\n"
-            		+ "        return           ===>  Goup\r\n"
-            		+ "        import file      ===>  import < path ( file / folder / sublist ) >\r\n"
-            		+ "        exit  list       ===>  exit\r\n"
-            		+ "      Please choose a valid choice ! ";
-			// choix du commande
-        	String command = choiceCommand(msg);
-        	// analyser la commande
-        	String [] commandTab = command.split(" ");
-        	
-	        // check le syntax de la commande 
-        	if(commandTab.length >= 1 && commandTab.length < 3) {
-	    	  
-		        switch(commandTab[0]){
-		        	// sauvgarder un playList dans un fichier xxx.xpl
-		            case "SAVE":
-		            case "Save":
-		            case "save":
-		            	
-		            	if(commandTab.length < 2) { 
-		            		System.out.println("Bad Command, Retry.");
-		            	}else {
-		            		// le nom de fichier xml
-			            	String pathname = commandTab[1];
-		            	
-		            		if (pathname.endsWith(".xml")) {
-		            	
-		            		// en utilse le visteur pour sauvgarder un playList
-		            			EnregistrerVisitor visitor = new EnregistrerVisitor();
-		                        String xmlFilePath = "xml/"+nameTodoList; // Chemin du fichier XML à créer
-		            			
-		            			
-		            	   // Appel du visiteur pour créer le fichier XML
-			                visitor.visitorTodoListImpl(todoList, xmlFilePath);
-			            	// fin save
-			            	System.out.println("Fin Save");
-			            	
-			                // sinon un problme de sauvgarde
-		            	    }else System.out.println("Unknown file extension !! ");
-		            	}
-		                 	
-		            break;
-		            // lister les entrer de la playList
-		            case "LIST":
-		            case "List":
-		            case "list":
-		            	
-		            	if(commandTab.length > 1) { 
-		            		System.out.println("Bad Command, Retry.");
-		            	}else {
-		            		//start=true;
-			            	System.out.println("Your List << " + nameTodoList + " >> contains : ");
-			            	// lister les entrer de la playList
-			            	todoList.displayTasks();
-		            	}
-		            			            	
-		            break;
-		            // enter dans un sous list
-		            case "ENTER":
-		            case "Enter":
-		            case "enter":
-		            	if(commandTab.length < 2) { 
-		            		System.out.println("Bad Command, Retry.");
-		            	}else {
-							try {
-							
-									
-								// enter dans le sous list
-					
-			            	} catch(NumberFormatException e) {
-			            		System.out.println(" Bad command !! ");
-			            	}
-		            	}
-						
-		            break;
-		            // remonter dans le pere d'un sous liste
-		            case "GOUP":
-		            case "Goup":
-		            case "goup":
-		            	
-		            
-		            	
-		            break;
-		            
-		            case "IMPORT":
-		            case "Import":
-		            case "import":
-		            	if(commandTab.length < 2) { 
-		            		System.out.println("Bad Command, Retry.");
-		            	}else {
-			            	// importer une sous list
-			            	String path = commandTab[1];
-		                   	
-			                XMLParser parseXml  = new XMLParser();
-			                parseXml.parseXml(todoList, path);
-			            	//XmlPlayList xmlplayList = new XmlPlayList();
-							// en utilisant le builder
-							//xmlplayList.loadFile(path);
-							
-				            System.out.println("Fin import");
-		            	}
-		            	break;
-		            // quitter un playList
-		            case "EXIT":
-		            case "Exit":
-		            case "exit":
-		            	
-		            	if(commandTab.length > 1) { 
-		            		System.out.println("Bad Command, Retry.");
-		            	}else {
-			            	System.out.println("You left the "+ nameTodoList);
-			            	start=true;
-		            	}
-		            break;
-		            
-		            default :
-		                System.out.println("Bad Command, Retry."); 
-		        }
-        	}else System.out.println("Bad Command, Retry.");
-		}while(start!=true);
-
-	}
 	
 }
 

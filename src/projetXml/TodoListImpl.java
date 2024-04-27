@@ -1,6 +1,7 @@
 package projetXml;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,6 +35,7 @@ public class TodoListImpl implements ToDoList {
 	        return tasks;
 	    }
 
+	    @Override
 	    public void displayTasks() {
 	        System.out.println("=== Todo List ===");
 	        int[] index = {1};
@@ -63,5 +65,53 @@ public class TodoListImpl implements ToDoList {
 			}	
 			
 		}
+		
+		@Override
+	    public void removeTaskById(int taskId) {
+	        if (tasks == null || tasks.isEmpty()) {
+	            System.out.println("Il n'y a pas de tâches.");
+	            return;
+	        }
+
+	        boolean found = false;
+
+	        Iterator<Tache> it = tasks.iterator();
+	        while (it.hasNext()) {
+	            Tache task = it.next();
+	            if (task.getId() == taskId) {
+	                it.remove(); // Supprime la tâche correspondante
+	                System.out.println("Tâche avec ID " + taskId + " supprimée.");
+	                found = true;
+	                break; // Sortie de la boucle après suppression
+	            }
+
+	            // Si la tâche est complexe, chercher dans les sous-tâches
+	            if (task instanceof ComplexTache) {
+	                ComplexTache complexTask = (ComplexTache) task;
+	                List<Tache> subTaches = complexTask.getSubTaches();
+	                Iterator<Tache> subIt = subTaches.iterator();
+
+	                while (subIt.hasNext()) {
+	                    Tache subTask = subIt.next();
+	                    if (subTask.getId() == taskId) {
+	                        subIt.remove(); // Supprime la sous-tâche
+	                        System.out.println("Sous-tâche avec ID " + taskId + " supprimée.");
+	                        found = true;
+	                        break;
+	                    }
+	                }
+
+	                // Si la sous-tâche est trouvée, pas besoin de chercher dans les autres tâches
+	                if (found) {
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (!found) {
+	            System.out.println("Aucune tâche ou sous-tâche avec l'ID " + taskId + " trouvée.");
+	        }
+	    }
+
 
 }

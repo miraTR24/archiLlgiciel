@@ -2,7 +2,9 @@ package projetXml;
 
 import java.time.LocalDate;
 
-public class SimpleTache implements Tache {
+public class SimpleTache extends Tache {
+	//private static int idCounter = 0;
+	private int id=0;
 	private String name;
     private String description;
     private LocalDate deadline;
@@ -11,7 +13,8 @@ public class SimpleTache implements Tache {
     private int progress;
 
     public SimpleTache(String description, LocalDate deadline, Priorite priorite, int estimatedDuration, int progress) {
-        this.description = description;
+        this.id=Tache.idCounter++;
+    	this.description = description;
         this.deadline = deadline;
         this.priorite = priorite;
         this.estimatedDuration = estimatedDuration;
@@ -23,6 +26,11 @@ public class SimpleTache implements Tache {
         return description;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+    
     @Override
     public LocalDate getDeadline() {
         return deadline;
@@ -51,11 +59,16 @@ public class SimpleTache implements Tache {
 	
 	   @Override
 	    public void display() {
+		   System.out.println("Id : " + getId());
 	        System.out.println("Description : " + getDescription());
 	        System.out.println("Deadline : " + getDeadline());
 	        System.out.println("Priorite : " + getPriorite());
 	        System.out.println("Estimated Duration : " + getEstimatedDuration());
 	        System.out.println("Progress : " + getProgress() + "%");
 	    }
+
+
+
+
 	
 }

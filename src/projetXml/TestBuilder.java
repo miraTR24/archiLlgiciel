@@ -35,6 +35,7 @@ public class TestBuilder {
             todoList.addTask(simpleTask2);
             todoList.addTask(boolTask);
             todoList.addTask(complexTask);
+         //   todoList.removeTaskById(2);;
 
             // Affichez la liste des tâches
             todoList.displayTasks();

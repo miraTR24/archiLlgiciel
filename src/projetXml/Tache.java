@@ -4,12 +4,15 @@ import java.time.LocalDate;
 
 
 
-public interface Tache {
-    String getDescription();
-    LocalDate getDeadline();
-    Priorite getPriorite();
-    int getProgress();
-	int getEstimatedDuration();
-	public abstract void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname);
-	void display();
+public abstract class Tache {
+	public static int idCounter = 1;
+	
+		public abstract int getId();
+	 	public abstract String getDescription();
+	    public abstract LocalDate getDeadline();
+	    public abstract Priorite getPriorite();
+	    public abstract int getProgress();
+	    public abstract int getEstimatedDuration();
+	    public abstract void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname);
+	    public abstract void display(); // Afficher la tâche
 }

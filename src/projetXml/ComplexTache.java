@@ -120,9 +120,13 @@ public class ComplexTache extends Tache {
 	}
 
 	public void replaceSubtask(int selectedRow, Tache modifiedSubtask) {
-		// TODO Auto-generated method stub
-		
+	    if (selectedRow >= 0 && selectedRow < subTaches.size()) {
+	        subTaches.set(selectedRow, modifiedSubtask);
+	    } else {
+	        throw new IllegalArgumentException("Invalid selected row: " + selectedRow);
+	    }
 	}
+
 
 
 

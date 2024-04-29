@@ -112,6 +112,13 @@ public class TodoListImpl implements ToDoList {
 	            System.out.println("Aucune tâche ou sous-tâche avec l'ID " + taskId + " trouvée.");
 	        }
 	    }
+		
+		  public void replaceTask(Tache oldTask, Tache newTask) {
+		        int index = tasks.indexOf(oldTask);
+		        if (index != -1) {
+		            tasks.set(index, newTask);
+		        }
+		    }
 
 
 }

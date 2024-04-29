@@ -119,6 +119,11 @@ public class ComplexTache extends Tache {
 	    System.out.println("________________________________________________ : ");
 	}
 
+	public void replaceSubtask(int selectedRow, Tache modifiedSubtask) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

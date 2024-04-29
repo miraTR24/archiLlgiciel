@@ -6,8 +6,10 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,18 +17,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
 import FactoryMethodParser.XMLParser;
 import projetXml.BoolTache;
+import projetXml.BooleanTacheBuilder;
 import projetXml.ComplexTache;
+import projetXml.ComplexTacheBuilder;
 import projetXml.EnregistrerVisitor;
 import projetXml.Priorite;
 import projetXml.SimpleTache;
+import projetXml.SimpleTacheBuilder;
 import projetXml.Tache;
-import projetXml.TodoListImpl;
+import projetXml.TacheBuilder;
 import projetXml.TacheFactory;
+import projetXml.TodoListImpl;
 import projetXml.concreateTacheFactoryBuilder;
 
 public class LauncherApp extends JFrame {
@@ -94,6 +102,135 @@ public class LauncherApp extends JFrame {
         btnImportXML.addActionListener(e -> importXML());
         btnSave.addActionListener(e -> saveToDoList());
     }
+    
+    private void modifyTask(Tache task) {
+        TacheBuilder builder;
+        if (task instanceof SimpleTache) {
+            builder = new SimpleTacheBuilder(tacheFactory);
+        } else if (task instanceof BoolTache) {
+            builder = new BooleanTacheBuilder(tacheFactory);
+        } else if (task instanceof ComplexTache) {
+            builder = new ComplexTacheBuilder(tacheFactory);
+        } else {
+            // Gérer d'autres types de tâches si nécessaire
+            return;
+        }
+
+        JFrame modifyFrame = new JFrame("Modifier la tâche");
+        modifyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        modifyFrame.setSize(400, 300);
+        modifyFrame.setLocationRelativeTo(this);
+
+        JPanel modifyPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        modifyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JTextField descriptionField = new JTextField(task.getDescription());
+        modifyPanel.add(new JLabel("Description :"));
+        modifyPanel.add(descriptionField);
+
+        JComboBox<Priorite> prioriteComboBox = new JComboBox<>(Priorite.values());
+        prioriteComboBox.setSelectedItem(task.getPriorite());
+        modifyPanel.add(new JLabel("Priorité :"));
+        modifyPanel.add(prioriteComboBox);
+
+        JTextField deadlineField = new JTextField(task.getDeadline().toString());
+        modifyPanel.add(new JLabel("Échéance :"));
+        modifyPanel.add(deadlineField);
+
+        JTextField progressField = new JTextField(Integer.toString(task.getProgress()));
+        modifyPanel.add(new JLabel("Progression (%) :"));
+        modifyPanel.add(progressField);
+
+        JButton saveButton = new JButton("Enregistrer");
+        saveButton.addActionListener(e -> {
+            // Utiliser le constructeur spécifique pour modifier les attributs de la tâche
+            builder.setDescription(descriptionField.getText())
+                   .setPriorite((Priorite) prioriteComboBox.getSelectedItem())
+                   .setDateEcheance(LocalDate.parse(deadlineField.getText()))
+                   .setProgress(Integer.parseInt(progressField.getText()));
+            if (task instanceof ComplexTache) {
+                // Modifier les attributs spécifiques à ComplexTache si nécessaire
+                // Exemple : builder.setEstimatedDuration(estimatedDuration);
+            }
+            Tache modifiedTask = builder.build(); // Construire la nouvelle tâche avec les modifications
+            todoList.replaceTask(task, modifiedTask); // Remplacer l'ancienne tâche par la nouvelle dans la liste
+            // Rafraîchir l'affichage de la table principale
+            updateTableModel();
+            modifyFrame.dispose(); // Fermer la fenêtre de modification
+        });
+        modifyPanel.add(saveButton);
+
+        modifyFrame.add(modifyPanel);
+        modifyFrame.setVisible(true);
+    }
+
+    private void modifySubtask(ComplexTache complexTask, int selectedRow) {
+        if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {
+            Tache subtask = complexTask.getSubTaches().get(selectedRow);
+            TacheBuilder builder;
+            if (subtask instanceof SimpleTache) {
+                builder = new SimpleTacheBuilder(tacheFactory);
+            } else if (subtask instanceof BoolTache) {
+                builder = new BooleanTacheBuilder(tacheFactory);
+            } else if (subtask instanceof ComplexTache) {
+                builder = new ComplexTacheBuilder(tacheFactory);
+            } else {
+                // Gérer d'autres types de sous-tâches si nécessaire
+                return;
+            }
+
+            JFrame modifyFrame = new JFrame("Modifier la sous-tâche");
+            modifyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            modifyFrame.setSize(400, 300);
+            modifyFrame.setLocationRelativeTo(this);
+
+            JPanel modifyPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+            modifyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            JTextField descriptionField = new JTextField(subtask.getDescription());
+            modifyPanel.add(new JLabel("Description :"));
+            modifyPanel.add(descriptionField);
+
+            JComboBox<Priorite> prioriteComboBox = new JComboBox<>(Priorite.values());
+            prioriteComboBox.setSelectedItem(subtask.getPriorite());
+            modifyPanel.add(new JLabel("Priorité :"));
+            modifyPanel.add(prioriteComboBox);
+
+            JTextField deadlineField = new JTextField(subtask.getDeadline().toString());
+            modifyPanel.add(new JLabel("Échéance :"));
+            modifyPanel.add(deadlineField);
+
+            JTextField progressField = new JTextField(Integer.toString(subtask.getProgress()));
+            modifyPanel.add(new JLabel("Progression (%) :"));
+            modifyPanel.add(progressField);
+
+            JButton saveButton = new JButton("Enregistrer");
+            saveButton.addActionListener(e -> {
+                // Utiliser le constructeur spécifique pour modifier les attributs de la sous-tâche
+                builder.setDescription(descriptionField.getText())
+                       .setPriorite((Priorite) prioriteComboBox.getSelectedItem())
+                       .setDateEcheance(LocalDate.parse(deadlineField.getText()))
+                       .setProgress(Integer.parseInt(progressField.getText()));
+                if (subtask instanceof ComplexTache) {
+                    builder.setEstimatedDuration(((ComplexTache) subtask).getEstimatedDuration());
+                }
+                Tache modifiedSubtask = builder.build(); // Construire la nouvelle sous-tâche avec les modifications
+                complexTask.replaceSubtask(selectedRow, modifiedSubtask); // Remplacer l'ancienne sous-tâche par la nouvelle
+                // Rafraîchir l'affichage de la liste des sous-tâches
+                updateSubtasksTableModel(complexTask);
+                modifyFrame.dispose(); // Fermer la fenêtre de modification
+            });
+            modifyPanel.add(saveButton);
+
+            modifyFrame.add(modifyPanel);
+            modifyFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucune sous-tâche sélectionnée.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
+    
     private void createComplexTask() {
     	try {
     		 String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
@@ -185,11 +322,7 @@ public class LauncherApp extends JFrame {
         detailsFrame.setVisible(true);
     }
 
-    private void modifyTask(Tache task) {
-        // Ouvrir une nouvelle fenêtre pour modifier les détails de la tâche
-        // et mettre à jour la tâche dans la TodoList
-        updateTableModel();
-    }
+  
 
     private void deleteTask(Tache task) {
         int confirm = JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer cette tâche ?", "Confirmation", JOptionPane.YES_NO_OPTION);
@@ -260,20 +393,6 @@ public class LauncherApp extends JFrame {
 	}
     }
 
-    private void modifySubtask(ComplexTache complexTask, int selectedRow) {
-        if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {
-            Tache selectedSubtask = complexTask.getSubTaches().get(selectedRow);
-            String subTaskDesc = JOptionPane.showInputDialog("Entrez la nouvelle description de la sous-tâche:", selectedSubtask.getDescription());
-            LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la nouvelle date d'échéance (AAAA-MM-JJ):", selectedSubtask.getDeadline().toString()));
-            Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la nouvelle priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), selectedSubtask.getPriorite());
-            int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la nouvelle durée estimée (en jours):", String.valueOf(selectedSubtask.getEstimatedDuration())));
-            int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nouveau pourcentage de progression:", String.valueOf(selectedSubtask.getProgress())));
-            selectedSubtask = new SimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
-            updateSubtasksTableModel(complexTask);
-        } else {
-            JOptionPane.showMessageDialog(this, "Aucune sous-tâche sélectionnée.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     private void deleteSubtask(ComplexTache complexTask, int selectedRow) {
         if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {

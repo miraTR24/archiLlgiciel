@@ -1,5 +1,4 @@
 package Client;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -7,7 +6,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,7 +18,6 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
 import FactoryMethodParser.XMLParser;
 import projetXml.BoolTache;
 import projetXml.ComplexTache;
@@ -28,7 +25,9 @@ import projetXml.EnregistrerVisitor;
 import projetXml.Priorite;
 import projetXml.SimpleTache;
 import projetXml.Tache;
-import projetXml.*;
+import projetXml.TodoListImpl;
+import projetXml.TacheFactory;
+import projetXml.concreateTacheFactoryBuilder;
 
 public class LauncherApp extends JFrame {
     private JTable table, subtasksTable;
@@ -44,12 +43,17 @@ public class LauncherApp extends JFrame {
     }
 
     private void createUI() {
-        setLayout(new BorderLayout());
-        setupMainTable();
-        setupButtonsPanel();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 400);
-        setVisible(true);
+      try {
+    	  setLayout(new BorderLayout());
+          setupMainTable();
+          setupButtonsPanel();
+          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          setSize(800, 400);
+          setVisible(true);
+	} catch (Exception e) {
+		 JOptionPane.showMessageDialog(this, "Erreur lors de l'importation du fichier XML: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+
+	}  
     }
 
     private void setupMainTable() {
@@ -74,15 +78,12 @@ public class LauncherApp extends JFrame {
         btnCreateComplex = new JButton("Créer Tâche Complexe");
         btnImportXML = new JButton("Importer XML");
         btnSave = new JButton("Sauvegarder");
-
         panelButtons.add(btnCreateSimple);
         panelButtons.add(btnCreateBoolean);
         panelButtons.add(btnCreateComplex);
         panelButtons.add(btnImportXML);
         panelButtons.add(btnSave);
-
         add(panelButtons, BorderLayout.SOUTH);
-
         attachEventHandlers();
     }
 
@@ -93,13 +94,62 @@ public class LauncherApp extends JFrame {
         btnImportXML.addActionListener(e -> importXML());
         btnSave.addActionListener(e -> saveToDoList());
     }
-
+    private void createComplexTask() {
+    	try {
+    		 String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
+    	        if (description == null || description.length() > 20) {
+    	            JOptionPane.showMessageDialog(this, "La description de la tâche complexe doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	            return;
+    	        }
+    	        Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.BASSE);
+    	        int numSubtasks = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nombre de sous-tâches:"));
+    	        List<Tache> subTasks = new ArrayList<>();
+    	        for (int i = 0; i < numSubtasks; i++) {
+    	            String[] options = {"Simple", "Booléenne", "Complexe"};
+    	            String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche " + (i + 1) + ":", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+    	            String subTaskDesc = JOptionPane.showInputDialog("Entrez la description de la sous-tâche " + (i + 1) + " (max 20 caractères):");
+    	            if (subTaskDesc == null || subTaskDesc.length() > 20) {
+    	                JOptionPane.showMessageDialog(this, "La description de la sous-tâche doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	                return;
+    	            }
+    	            LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
+    	            Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité de la sous-tâche:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
+    	            int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours) de la sous-tâche:"));
+    	            int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
+    	            Tache newSubtask = null;
+    	            switch (choice) {
+    	                case "Simple":
+    	                    newSubtask = tacheFactory.createSimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
+    	                    break;
+    	                case "Booléenne":
+    	                    boolean isCompleted = JOptionPane.showConfirmDialog(null, "La sous-tâche est-elle terminée ?", "Sous-tâche terminée", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    	                    newSubtask = tacheFactory.createTacheBoolean(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, isCompleted);
+    	                    break;
+    	                case "Complexe":
+    	                    List<Tache> subSubTasks = new ArrayList<>();
+    	                    newSubtask = tacheFactory.createTacheComplexe(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, subSubTasks);
+    	                    
+    	                    break;
+    	            }
+    	            if (newSubtask != null || newSubtask != null ) {
+    	                subTasks.add(newSubtask);
+    	            }
+    	        }
+    	        ComplexTache complexTask = new ComplexTache(description, priorite, subTasks);
+    	        todoList.addTask(complexTask);
+    	        updateTableModel();
+			
+		} catch (Exception e) {
+			 JOptionPane.showMessageDialog(this, "Fait attension au remplissage.", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+       
+    }
     private void showTaskDetails(Tache task) {
+    	
         JFrame detailsFrame = new JFrame("Détails de la tâche");
         detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         detailsFrame.setSize(400, 300);
         detailsFrame.setLocationRelativeTo(this);
-
         JPanel detailsPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         detailsPanel.add(new JLabel("Description :"));
@@ -112,22 +162,24 @@ public class LauncherApp extends JFrame {
         detailsPanel.add(new JLabel(task.getPriorite().toString()));
         detailsPanel.add(new JLabel("Progression :"));
         detailsPanel.add(new JLabel(task.getProgress() + "%"));
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton modifyButton = new JButton("Modifier");
+        
+        
         JButton deleteButton = new JButton("Supprimer");
         buttonPanel.add(modifyButton);
         buttonPanel.add(deleteButton);
-
         modifyButton.addActionListener(e -> modifyTask(task));
         deleteButton.addActionListener(e -> deleteTask(task));
-
+         
+        
+        
+        
         if (task instanceof ComplexTache) {
             JButton viewSubtasksButton = new JButton("Voir les sous-tâches");
             viewSubtasksButton.addActionListener(e -> showSubtasks((ComplexTache) task));
             buttonPanel.add(viewSubtasksButton);
         }
-
         detailsFrame.add(detailsPanel, BorderLayout.CENTER);
         detailsFrame.add(buttonPanel, BorderLayout.SOUTH);
         detailsFrame.setVisible(true);
@@ -152,22 +204,11 @@ public class LauncherApp extends JFrame {
         subtasksFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         subtasksFrame.setSize(600, 400);
         subtasksFrame.setLocationRelativeTo(this);
-
         subtasksModel = new DefaultTableModel(
-                new Object[]{"ID", "Description", "Échéance", "Priorité", "Progression"}, 0
+            new Object[]{"ID", "Description", "Type", "Échéance", "Priorité", "Progression"}, 0
         );
         subtasksTable = new JTable(subtasksModel);
         subtasksTable.setFillsViewportHeight(true);
-        subtasksTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int selectedRow = subtasksTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    Tache selectedSubtask = complexTask.getSubTaches().get(selectedRow);
-                    showTaskDetails(selectedSubtask);
-                }
-            }
-        });
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton addSubtaskButton = new JButton("Ajouter sous-tâche");
         JButton modifySubtaskButton = new JButton("Modifier sous-tâche");
@@ -175,30 +216,26 @@ public class LauncherApp extends JFrame {
         buttonPanel.add(addSubtaskButton);
         buttonPanel.add(modifySubtaskButton);
         buttonPanel.add(deleteSubtaskButton);
-
         addSubtaskButton.addActionListener(e -> addSubtask(complexTask));
         modifySubtaskButton.addActionListener(e -> modifySubtask(complexTask, subtasksTable.getSelectedRow()));
         deleteSubtaskButton.addActionListener(e -> deleteSubtask(complexTask, subtasksTable.getSelectedRow()));
-
         updateSubtasksTableModel(complexTask);
-
         subtasksFrame.add(new JScrollPane(subtasksTable), BorderLayout.CENTER);
         subtasksFrame.add(buttonPanel, BorderLayout.SOUTH);
         subtasksFrame.setVisible(true);
     }
 
-
-
     private void addSubtask(ComplexTache complexTask) {
-        String[] options = {"Simple", "Booléenne", "Complexe"};
-        String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche à ajouter:", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+       try {
+		
 
+    	String[] options = {"Simple", "Booléenne", "Complexe"};
+        String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche à ajouter:", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         String description = JOptionPane.showInputDialog("Entrez la description de la sous-tâche:");
         LocalDate deadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
         Priorite priorite = (Priorite) JOptionPane.showInputDialog(null, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.MOYENNE);
         int estimatedDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours):"));
         int progress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression:"));
-
         Tache newSubtask = null;
         switch (choice) {
             case "Simple":
@@ -209,15 +246,18 @@ public class LauncherApp extends JFrame {
                 newSubtask = tacheFactory.createTacheBoolean(description, deadline, priorite, estimatedDuration, progress, isCompleted);
                 break;
             case "Complexe":
-                List<Tache> subSubTaches = new ArrayList<>(); // You would need to implement a way to add sub-subtasks if needed
+                List<Tache> subSubTaches = new ArrayList<>();
+                // You would need to implement a way to add sub-subtasks if needed
                 newSubtask = tacheFactory.createTacheComplexe(description, deadline, priorite, estimatedDuration, progress, subSubTaches);
                 break;
         }
-
-        if (newSubtask != null) {
+        if (newSubtask != null || choice != null || description != null || deadline != null) {
             complexTask.getSubTaches().add(newSubtask);
             updateSubtasksTableModel(complexTask);
-        }
+        }	} catch (Exception e) {
+        	 JOptionPane.showMessageDialog(this, "Fait attention au remplissage", "Erreur", JOptionPane.ERROR_MESSAGE);
+		
+	}
     }
 
     private void modifySubtask(ComplexTache complexTask, int selectedRow) {
@@ -245,27 +285,36 @@ public class LauncherApp extends JFrame {
     }
 
     private void updateSubtasksTableModel(ComplexTache complexTask) {
+    	  model.setRowCount(0);
+          int index = 1;
         subtasksModel.setRowCount(0);
         for (Tache subtask : complexTask.getSubTaches()) {
-            subtasksModel.addRow(new Object[]{
-                    subtask.getDescription(), subtask.getDeadline(), subtask.getPriorite(), subtask.getProgress()
-            });
+            subtasksModel.addRow(new Object[]{index, subtask.getDescription(), subtask.getClass().getSimpleName(), subtask.getDeadline(), subtask.getPriorite(), subtask.getProgress()});
+            index++;
         }
-    }
-
-    private void createSimpleTask() {
-        String description = JOptionPane.showInputDialog("Entrez la description de la tâche simple:");
-        LocalDate deadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
-        Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.MOYENNE);
-        int estimatedDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours):"));
-        int progress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression:"));
-        SimpleTache task = new SimpleTache(description, deadline, priorite, estimatedDuration, progress);
-        todoList.addTask(task);
         updateTableModel();
     }
 
+    private void createSimpleTask() {
+    	
+    	try {
+    	       String description = JOptionPane.showInputDialog("Entrez la description de la tâche simple:");
+    	        LocalDate deadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
+    	        Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.MOYENNE);
+    	        int estimatedDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours):"));
+    	        int progress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression:"));
+    	        SimpleTache task = new SimpleTache(description, deadline, priorite, estimatedDuration, progress);
+    	        todoList.addTask(task);
+    	        updateTableModel();
+		} catch (Exception e) {
+			 JOptionPane.showMessageDialog(this, "fait attention au remplissage des donnees .", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+ 
+    }
+
     private void createBooleanTask() {
-        String description = JOptionPane.showInputDialog("Entrez la description de la tâche booléenne:");
+    	try {
+    	String description = JOptionPane.showInputDialog("Entrez la description de la tâche booléenne:");
         LocalDate deadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
         Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.MOYENNE);
         int estimatedDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours):"));
@@ -274,25 +323,10 @@ public class LauncherApp extends JFrame {
         BoolTache task = new BoolTache(description, deadline, priorite, estimatedDuration, progress, isCompleted);
         todoList.addTask(task);
         updateTableModel();
-    }
+	} catch (Exception e) {
+		 JOptionPane.showMessageDialog(this, "fait attention au remplissage des donnees .", "Erreur", JOptionPane.ERROR_MESSAGE);
+	}
 
-    private void createComplexTask() {
-        String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
-        Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.BASSE);
-        int numSubtasks = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nombre de sous-tâches:"));
-        List<Tache> subTasks = new ArrayList<>();
-        for (int i = 0; i < numSubtasks; i++) {
-            String subTaskDesc = JOptionPane.showInputDialog("Entrez la description de la sous-tâche " + (i + 1) + ":");
-            LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
-            Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
-            int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours):"));
-            int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression:"));
-            subTasks.add(new SimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress));
-            
-        }
-        Tache complexTask = new ComplexTache(description, priorite, subTasks);
-        todoList.addTask(complexTask);
-        updateTableModel();
     }
 
     private void importXML() {
@@ -340,8 +374,10 @@ public class LauncherApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LauncherApp gui = new LauncherApp();
-            gui.setVisible(true);
-        });
+    	
+            SwingUtilities.invokeLater(() -> {
+                LauncherApp app = new LauncherApp();
+            });
+		
+
     }}

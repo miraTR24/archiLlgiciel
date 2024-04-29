@@ -112,7 +112,7 @@ public class LauncherApp extends JFrame {
         } else if (task instanceof ComplexTache) {
             builder = new ComplexTacheBuilder(tacheFactory);
         } else {
-            // Gérer d'autres types de tâches si nécessaire
+            // Gérer d'autres types de tâches si  nécessaire
             return;
         }
 
@@ -165,15 +165,20 @@ public class LauncherApp extends JFrame {
     }
 
     private void modifySubtask(ComplexTache complexTask, int selectedRow) {
+    	
         if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {
             Tache subtask = complexTask.getSubTaches().get(selectedRow);
             TacheBuilder builder;
+            
+            
+            
             if (subtask instanceof SimpleTache) {
                 builder = new SimpleTacheBuilder(tacheFactory);
             } else if (subtask instanceof BoolTache) {
                 builder = new BooleanTacheBuilder(tacheFactory);
             } else if (subtask instanceof ComplexTache) {
                 builder = new ComplexTacheBuilder(tacheFactory);
+                
             } else {
                 // Gérer d'autres types de sous-tâches si nécessaire
                 return;
@@ -203,6 +208,7 @@ public class LauncherApp extends JFrame {
             JTextField progressField = new JTextField(Integer.toString(subtask.getProgress()));
             modifyPanel.add(new JLabel("Progression (%) :"));
             modifyPanel.add(progressField);
+                    
 
             JButton saveButton = new JButton("Enregistrer");
             saveButton.addActionListener(e -> {
@@ -213,13 +219,15 @@ public class LauncherApp extends JFrame {
                        .setProgress(Integer.parseInt(progressField.getText()));
                 if (subtask instanceof ComplexTache) {
                     builder.setEstimatedDuration(((ComplexTache) subtask).getEstimatedDuration());
-                }
+                  
+                }     
                 Tache modifiedSubtask = builder.build(); // Construire la nouvelle sous-tâche avec les modifications
                 complexTask.replaceSubtask(selectedRow, modifiedSubtask); // Remplacer l'ancienne sous-tâche par la nouvelle
                 // Rafraîchir l'affichage de la liste des sous-tâches
                 updateSubtasksTableModel(complexTask);
                 modifyFrame.dispose(); // Fermer la fenêtre de modification
             });
+            
             modifyPanel.add(saveButton);
 
             modifyFrame.add(modifyPanel);
@@ -232,55 +240,108 @@ public class LauncherApp extends JFrame {
     
     
     private void createComplexTask() {
-    	try {
-    		 String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
-    	        if (description == null || description.length() > 20) {
-    	            JOptionPane.showMessageDialog(this, "La description de la tâche complexe doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
-    	            return;
-    	        }
-    	        Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.BASSE);
-    	        int numSubtasks = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nombre de sous-tâches:"));
-    	        List<Tache> subTasks = new ArrayList<>();
-    	        for (int i = 0; i < numSubtasks; i++) {
-    	            String[] options = {"Simple", "Booléenne", "Complexe"};
-    	            String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche " + (i + 1) + ":", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-    	            String subTaskDesc = JOptionPane.showInputDialog("Entrez la description de la sous-tâche " + (i + 1) + " (max 20 caractères):");
-    	            if (subTaskDesc == null || subTaskDesc.length() > 20) {
-    	                JOptionPane.showMessageDialog(this, "La description de la sous-tâche doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
-    	                return;
-    	            }
-    	            LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
-    	            Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité de la sous-tâche:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
-    	            int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours) de la sous-tâche:"));
-    	            int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
-    	            Tache newSubtask = null;
-    	            switch (choice) {
-    	                case "Simple":
-    	                    newSubtask = tacheFactory.createSimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
-    	                    break;
-    	                case "Booléenne":
-    	                    boolean isCompleted = JOptionPane.showConfirmDialog(null, "La sous-tâche est-elle terminée ?", "Sous-tâche terminée", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-    	                    newSubtask = tacheFactory.createTacheBoolean(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, isCompleted);
-    	                    break;
-    	                case "Complexe":
-    	                    List<Tache> subSubTasks = new ArrayList<>();
-    	                    newSubtask = tacheFactory.createTacheComplexe(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, subSubTasks);
-    	                    
-    	                    break;
-    	            }
-    	            if (newSubtask != null || newSubtask != null ) {
-    	                subTasks.add(newSubtask);
-    	            }
-    	        }
-    	        ComplexTache complexTask = new ComplexTache(description, priorite, subTasks);
-    	        todoList.addTask(complexTask);
-    	        updateTableModel();
-			
-		} catch (Exception e) {
-			 JOptionPane.showMessageDialog(this, "Fait attension au remplissage.", "Erreur", JOptionPane.ERROR_MESSAGE);
-		}
-       
+        try {
+            String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
+            if (description == null || description.length() > 20) {
+                JOptionPane.showMessageDialog(this, "La description de la tâche complexe doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.BASSE);
+            int numSubtasks = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nombre de sous-tâches:"));
+            List<Tache> subTasks = new ArrayList<>();
+            for (int i = 0; i < numSubtasks; i++) {
+                String[] options = {"Simple", "Booléenne", "Complexe"};
+                String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche " + (i + 1) + ":", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                String subTaskDesc = JOptionPane.showInputDialog("Entrez la description de la sous-tâche " + (i + 1) + " (max 20 caractères):");
+                if (subTaskDesc == null || subTaskDesc.length() > 20) {
+                    JOptionPane.showMessageDialog(this, "La description de la sous-tâche doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
+                Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité de la sous-tâche:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
+                int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours) de la sous-tâche:"));
+                int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
+                Tache newSubtask = null;
+                switch (choice) {
+                    case "Simple":
+                        newSubtask = tacheFactory.createSimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
+                        break;
+                    case "Booléenne":
+                        boolean isCompleted = JOptionPane.showConfirmDialog(null, "La sous-tâche est-elle terminée ?", "Sous-tâche terminée", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                        newSubtask = tacheFactory.createTacheBoolean(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, isCompleted);
+                        break;
+                    case "Complexe":
+                        // Créez une liste pour stocker les sous-tâches de la sous-tâche complexe
+                        List<Tache> subSubTasks = new ArrayList<>();
+                        // Appelez la méthode createComplexTask récursivement pour créer les sous-tâches complexes
+                        createComplexTask(subSubTasks);
+                        newSubtask = tacheFactory.createTacheComplexe(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, subSubTasks);
+                        break;
+                }
+                if (newSubtask != null) {
+                    subTasks.add(newSubtask);
+                }
+            }
+            // Créez la tâche complexe avec la liste de sous-tâches
+            ComplexTache complexTask = new ComplexTache(description, priorite, subTasks);
+            todoList.addTask(complexTask);
+            updateTableModel();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Faites attention au remplissage.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
+    // Méthode pour créer les sous-tâches complexes de manière récursive
+    
+    
+    
+    private void createComplexTask(List<Tache> subTasks) {
+        try {
+            String description = JOptionPane.showInputDialog("Entrez la description de la tâche complexe (max 20 caractères):");
+            if (description == null || description.length() > 20) {
+                JOptionPane.showMessageDialog(this, "La description de la tâche complexe doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Priorite priorite = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.BASSE);
+            int numSubtasks = Integer.parseInt(JOptionPane.showInputDialog("Entrez le nombre de sous-tâches:"));
+            for (int i = 0; i < numSubtasks; i++) {
+                String[] options = {"Simple", "Booléenne", "Complexe"};
+                String choice = (String) JOptionPane.showInputDialog(null, "Choisissez le type de sous-tâche " + (i + 1) + ":", "Type de sous-tâche", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                String subTaskDesc = JOptionPane.showInputDialog("Entrez la description de la sous-tâche " + (i + 1) + " (max 20 caractères):");
+                if (subTaskDesc == null || subTaskDesc.length() > 20) {
+                    JOptionPane.showMessageDialog(this, "La description de la sous-tâche doit faire 20 caractères maximum.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
+                Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité de la sous-tâche:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
+                int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours) de la sous-tâche:"));
+                int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
+                Tache newSubtask = null;
+                switch (choice) {
+                    case "Simple":
+                        newSubtask = tacheFactory.createSimpleTache(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
+                        break;
+                    case "Booléenne":
+                        boolean isCompleted = JOptionPane.showConfirmDialog(null, "La sous-tâche est-elle terminée ?", "Sous-tâche terminée", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                        newSubtask = tacheFactory.createTacheBoolean(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, isCompleted);
+                        break;
+                    case "Complexe":
+                        // Créez une liste pour stocker les sous-tâches de la sous-tâche complexe
+                        List<Tache> subSubTasks = new ArrayList<>();
+                        // Appelez la méthode createComplexTask récursivement pour créer les sous-tâches complexes
+                        createComplexTask(subSubTasks);
+                        newSubtask = tacheFactory.createTacheComplexe(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress, subSubTasks);
+                        break;
+                }
+                if (newSubtask != null) {
+                    subTasks.add(newSubtask);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Faites attention au remplissage.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void showTaskDetails(Tache task) {
     	
         JFrame detailsFrame = new JFrame("Détails de la tâche");
@@ -301,17 +362,13 @@ public class LauncherApp extends JFrame {
         detailsPanel.add(new JLabel(task.getProgress() + "%"));
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton modifyButton = new JButton("Modifier");
-        
-        
+  
         JButton deleteButton = new JButton("Supprimer");
         buttonPanel.add(modifyButton);
         buttonPanel.add(deleteButton);
         modifyButton.addActionListener(e -> modifyTask(task));
         deleteButton.addActionListener(e -> deleteTask(task));
-         
-        
-        
-        
+                 
         if (task instanceof ComplexTache) {
             JButton viewSubtasksButton = new JButton("Voir les sous-tâches");
             viewSubtasksButton.addActionListener(e -> showSubtasks((ComplexTache) task));
@@ -331,6 +388,9 @@ public class LauncherApp extends JFrame {
             updateTableModel();
         }
     }
+    
+    
+    
 
     private void showSubtasks(ComplexTache complexTask) {
         JFrame subtasksFrame = new JFrame("Sous-tâches");
@@ -352,7 +412,10 @@ public class LauncherApp extends JFrame {
         addSubtaskButton.addActionListener(e -> addSubtask(complexTask));
         modifySubtaskButton.addActionListener(e -> modifySubtask(complexTask, subtasksTable.getSelectedRow()));
         deleteSubtaskButton.addActionListener(e -> deleteSubtask(complexTask, subtasksTable.getSelectedRow()));
+
+        // Mise à jour du modèle de la table des sous-tâches
         updateSubtasksTableModel(complexTask);
+
         subtasksFrame.add(new JScrollPane(subtasksTable), BorderLayout.CENTER);
         subtasksFrame.add(buttonPanel, BorderLayout.SOUTH);
         subtasksFrame.setVisible(true);
@@ -379,9 +442,11 @@ public class LauncherApp extends JFrame {
                 newSubtask = tacheFactory.createTacheBoolean(description, deadline, priorite, estimatedDuration, progress, isCompleted);
                 break;
             case "Complexe":
-                List<Tache> subSubTaches = new ArrayList<>();
-                // You would need to implement a way to add sub-subtasks if needed
-                newSubtask = tacheFactory.createTacheComplexe(description, deadline, priorite, estimatedDuration, progress, subSubTaches);
+            	  List<Tache> subSubTasks = new ArrayList<>();
+                  // Appelez la méthode createComplexTask récursivement pour créer les sous-tâches complexes
+                  createComplexTask(subSubTasks);
+                  newSubtask = tacheFactory.createTacheComplexe(description, deadline, priorite, estimatedDuration, progress, subSubTasks);
+
                 break;
         }
         if (newSubtask != null || choice != null || description != null || deadline != null) {
@@ -389,9 +454,8 @@ public class LauncherApp extends JFrame {
             updateSubtasksTableModel(complexTask);
         }	} catch (Exception e) {
         	 JOptionPane.showMessageDialog(this, "Fait attention au remplissage", "Erreur", JOptionPane.ERROR_MESSAGE);
-		
-	}
-    }
+        	 }
+    			}
 
 
     private void deleteSubtask(ComplexTache complexTask, int selectedRow) {
@@ -499,4 +563,5 @@ public class LauncherApp extends JFrame {
             });
 		
 
-    }}
+    }
+    }

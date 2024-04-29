@@ -52,8 +52,7 @@ public class SimpleTacheBuilder implements TacheBuilder {
 
     @Override
     public Tache build() {
-        this.estimatedDuration = 0;
-        this.progress = 0;
+   
         return factory.createSimpleTache(description, dateEcheance, priorite, estimatedDuration, progress);
     }
 

@@ -1,5 +1,5 @@
 package projetXml;
-
+/*
 import java.time.LocalDate;
 
 public class BooleanTacheBuilder implements TacheBuilder {
@@ -53,6 +53,11 @@ public class BooleanTacheBuilder implements TacheBuilder {
     @Override
     public TacheBuilder setProgress(int progress) {
         this.progress = progress;
+        if (progress==100)
+        {
+			isCompleted=true;
+			}
+        else isCompleted=false;
         return this;
     }
 
@@ -61,4 +66,4 @@ public class BooleanTacheBuilder implements TacheBuilder {
         return factory.createTacheBoolean(description, dateEcheance, priorite,estimatedDuration,progress, isCompleted);
     }
 
-}
+}*/

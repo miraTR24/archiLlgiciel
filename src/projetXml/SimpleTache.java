@@ -2,24 +2,19 @@ package projetXml;
 
 import java.time.LocalDate;
 
-public class SimpleTache extends Tache {
+public class SimpleTache extends Tache implements TacheBuilder {
 	//private static int idCounter = 0;
 	private int id=0;
 	private String name;
     private String description;
-    private LocalDate deadline;
+    private LocalDate dateEcheance;
     private Priorite priorite;
     private int estimatedDuration;
     private int progress;
 
-    public SimpleTache(String description, LocalDate deadline, Priorite priorite, int estimatedDuration, int progress) {
-        this.id=Tache.idCounter++;
-    	this.description = description;
-        this.deadline = deadline;
-        this.priorite = priorite;
-        this.estimatedDuration = estimatedDuration;
-        this.progress = progress;
-    }
+    public SimpleTache() {
+    
+        this.id=Tache.idCounter++;    }
 
     @Override
     public String getDescription() {
@@ -33,7 +28,7 @@ public class SimpleTache extends Tache {
     
     @Override
     public LocalDate getDeadline() {
-        return deadline;
+        return dateEcheance;
     }
 
     @Override
@@ -66,6 +61,47 @@ public class SimpleTache extends Tache {
 	        System.out.println("Estimated Duration : " + getEstimatedDuration());
 	        System.out.println("Progress : " + getProgress() + "%");
 	    }
+
+	    @Override
+	    public TacheBuilder setDescription(String description) {
+	        this.description = description;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder setDateEcheance(LocalDate dateEcheance) {
+	        this.dateEcheance = dateEcheance;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder setPriorite(Priorite priorite) {
+	        this.priorite = priorite;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder addSubtask(Tache subtask) {
+	        throw new UnsupportedOperationException("Cannot add subtask to SimpleTache");
+	    }
+	    
+	    @Override
+	    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+	        this.estimatedDuration = estimatedDuration;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder setProgress(int progress) {
+	        this.progress = progress;
+	        return this;
+	    }
+
+	@Override
+	public Tache build() {
+		
+		return this;
+	}
 
 
 

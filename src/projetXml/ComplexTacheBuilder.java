@@ -1,5 +1,5 @@
 package projetXml;
-
+/*
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +52,15 @@ public class ComplexTacheBuilder implements TacheBuilder {
         this.subtasks.add(subtask);
         return this;
     }
+    
+    public TacheBuilder setSubTaches(List<Tache> subTaches) {
+        this.subtasks = subTaches;
+        return this;
+    }
 
     @Override
     public Tache build() {
-        return factory.createTacheComplexe(description, dateEcheance, priorite,estimatedDuration,progress, subtasks);
+        return ComplexTacheBuilder;
     }
 }
+*/

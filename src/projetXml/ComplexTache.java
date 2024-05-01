@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ComplexTache extends Tache {
+public class ComplexTache extends Tache  implements TacheBuilder{
 	private int id=0;
 	private String name;
     private String description; // Descriptif court (20 caractères)
@@ -14,17 +14,11 @@ public class ComplexTache extends Tache {
     private int progress; // Progression en pourcentage
     private List<Tache> subTaches; // Sous-tâches
 
-    public ComplexTache(String description, Priorite priorite, List<Tache> subTaches) {
-        if (description.length() > 20) {
-            throw new IllegalArgumentException("La description ne doit pas dépasser 20 caractères.");
-        }
+    public ComplexTache() {
+       
         this.id=Tache.idCounter++;
-        this.description = description;
-        this.subTaches = subTaches;
-        this.priorite = priorite;
-        this.deadline = calculateDeadline(); // Calcul de l'échéance
-        this.estimatedDuration = getEstimatedDuration(); // Calcul de la durée estimée
-        this.progress = getProgress(); // Calcul de la progression
+        this.subTaches = new ArrayList<>();
+
     }
 
     @Override
@@ -85,7 +79,7 @@ public class ComplexTache extends Tache {
     }
 
     // Calcul de l'échéance en prenant la date la plus grande parmi les sous-tâches
-    private LocalDate calculateDeadline() {
+    public LocalDate calculateDeadline() {
         LocalDate maxDeadline = null;
         for (Tache subTache : subTaches) {
             if (maxDeadline == null || subTache.getDeadline().isAfter(maxDeadline)) {
@@ -113,8 +107,7 @@ public class ComplexTache extends Tache {
 	    System.out.println("________________________________________________ : ");
 	    System.out.println("Subtasks : ");
 	    for (Tache subTask : subTaches) {
-	        subTask.display();
-	    }
+	        subTask.display(); }
 	    
 	    System.out.println("________________________________________________ : ");
 	}
@@ -125,6 +118,60 @@ public class ComplexTache extends Tache {
 	    } else {
 	        throw new IllegalArgumentException("Invalid selected row: " + selectedRow);
 	    }
+	}
+
+	  @Override
+	    public TacheBuilder setDescription(String description) {
+	        this.description = description;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder setDateEcheance(LocalDate deadline) {
+	        this.deadline = deadline;
+	        return this;
+	    }
+
+	    @Override
+	    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+	        this.estimatedDuration = estimatedDuration;
+	        return this;
+	    }
+	    @Override
+	    public TacheBuilder setPriorite(Priorite priorite) {
+	        this.priorite = priorite;
+	        return this;
+	    }
+	    
+	    @Override
+	    public TacheBuilder setProgress(int progress) {
+	        this.progress = progress;
+	        return this;
+	    }
+	    
+	    @Override
+	    public TacheBuilder addSubtask(Tache subtask) {
+	    	System.out.println(subtask.getDescription());
+	    	
+	        this.subTaches.add(subtask);
+	        return this;
+	    }
+	    
+	    public TacheBuilder setSubTaches(List<Tache> subTaches) {
+	        this.subTaches = subTaches;
+	        return this;
+	    }
+
+	@Override
+	public Tache build() {
+		 if (description.length() > 20) {
+	            throw new IllegalArgumentException("La description ne doit pas dépasser 20 caractères.");
+	           }
+		 
+	        this.deadline = calculateDeadline(); // Calcul de l'échéance
+	        this.estimatedDuration = getEstimatedDuration(); // Calcul de la durée estimée
+	        this.progress = getProgress(); // Calcul de la progression
+		return this;
 	}
 
 

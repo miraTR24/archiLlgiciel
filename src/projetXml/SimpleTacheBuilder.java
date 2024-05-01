@@ -1,5 +1,5 @@
 package projetXml;
-
+/*
 import java.time.LocalDate;
 
 public class SimpleTacheBuilder implements TacheBuilder {
@@ -53,8 +53,8 @@ public class SimpleTacheBuilder implements TacheBuilder {
     @Override
     public Tache build() {
    
-        return factory.createSimpleTache(description, dateEcheance, priorite, estimatedDuration, progress);
+        return factory.createSimpleTache();
     }
 
 
-}
+}*/

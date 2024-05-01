@@ -12,8 +12,71 @@ import FactoryMethodParser.XMLParser;
 public class TestBuilder {
     public static void main(String[] args) {
         try {
+        	
             // Créez une nouvelle instance de TodoList
             TodoListImpl todoList = new TodoListImpl();
+        	
+        	
+        	 TacheFactory factory = new concreateTacheFactoryBuilder();
+
+             // Create a simple task
+             TacheBuilder tacheSimpleBuilder = factory.createSimpleTache();
+             Tache tacheSimple = tacheSimpleBuilder
+                     .setDescription("Tâche simple")
+                     .setDateEcheance(LocalDate.now())
+                     .setPriorite(Priorite.BASSE)
+                     .setEstimatedDuration(2)
+                     .setProgress(30)
+                     .build();
+
+             // Create a boolean task
+             TacheBuilder tacheBooleanBuilder = factory.createTacheBoolean();
+             Tache tacheBooleenne = tacheBooleanBuilder
+                     .setDescription("Tâche booléenne")
+                     .setDateEcheance(LocalDate.now())
+                     .setPriorite(Priorite.HAUTE)
+                     .setProgress(100)
+                     .build();
+
+             // Create a complex task
+             TacheBuilder tacheComplexeBuilder = factory.createTacheComplexe();
+             Tache tacheComplexe = tacheComplexeBuilder
+                     .setDescription("Tâche complexe")
+                     .setPriorite(Priorite.HAUTE)
+                     .setEstimatedDuration(4)
+                     .addSubtask(tacheSimple)
+                     .build();
+         
+        	
+        		
+             todoList.addTask(tacheComplexe);
+              todoList.addTask(tacheSimple);
+              todoList.addTask(tacheBooleenne);
+             //  todoList.addTask(boolTask);
+             //   todoList.addTask(complexTask);
+          //   todoList.removeTaskById(2);;
+        
+             TodoListImpl todoList1 = new TodoListImpl();
+             XMLParser parseXml  = new XMLParser();
+             String xmlFilePath = "xml/ToDoList222.xml"; // Chemin du fichier XML à créer
+             parseXml.parseXml(todoList1, xmlFilePath);
+             todoList1.displayTasks();
+        	
+        	
+        /*
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+
 
             // Créez des tâches simples
             Tache simpleTask1 = new SimpleTache("hahahah", LocalDate.now().plusDays(1), Priorite.MOYENNE, 1, 50);
@@ -56,7 +119,7 @@ System.out.println("--------------sssss--------ddddf--------------");
             parseXml.parseXml(todoList1, xmlFilePath);
 
             // Affichez la TodoList importée
-            todoList1.displayTasks();
+            todoList1.displayTasks();*/
 
         } catch (Exception e) {
             e.printStackTrace();

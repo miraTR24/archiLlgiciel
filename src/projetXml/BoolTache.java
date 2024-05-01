@@ -2,24 +2,17 @@ package projetXml;
 
 import java.time.LocalDate;
 
-public class BoolTache extends Tache {
+public class BoolTache extends Tache implements TacheBuilder {
 	private int id=0;
-	private String name;
-    private String description;
-    private LocalDate deadline;
+	private String description;
+    private LocalDate dateEcheance;
     private Priorite priorite;
     private int estimatedDuration;
     private int progress;
     private boolean isCompleted;
 
-    public BoolTache(String description, LocalDate deadline, Priorite priorite,int estimatedDuration,int progress, boolean isCompleted) {
+    public BoolTache() {
     	this.id=Tache.idCounter++;
-        this.description = description;
-        this.deadline = deadline;
-        this.priorite = priorite;
-        this.estimatedDuration=estimatedDuration;
-        this.progress=progress;
-        this.isCompleted = isCompleted;
     }
 
     @Override
@@ -34,7 +27,7 @@ public class BoolTache extends Tache {
 
     @Override
     public LocalDate getDeadline() {
-        return deadline;
+        return dateEcheance;
     }
 
     @Override
@@ -47,10 +40,6 @@ public class BoolTache extends Tache {
         return isCompleted;
     }
 
-    // Setter pour isCompleted
-    public void setCompleted(boolean isCompleted) {
-        this.isCompleted = isCompleted;
-    }
 
 	@Override
 	public int getProgress() {
@@ -67,7 +56,6 @@ public class BoolTache extends Tache {
 	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
 	
 			
-			name = pathname;
 			toDoListVisitor.visitorBoolTache(this, pathname);
 		
 	}
@@ -81,6 +69,60 @@ public class BoolTache extends Tache {
         System.out.println("Estimated Duration : " + getEstimatedDuration());
         System.out.println("Completed : " + isCompleted());
     }
+
+    @Override
+    public TacheBuilder setDescription(String description) {
+        this.description = description;
+        return this;
+}
+
+    @Override
+    public TacheBuilder setDateEcheance(LocalDate dateEcheance) {
+        this.dateEcheance = dateEcheance;
+        return this;
+    }
+
+    @Override
+    public TacheBuilder setPriorite(Priorite priorite) {
+        this.priorite = priorite;
+        return this;
+    }
+
+    @Override
+    public TacheBuilder addSubtask(Tache subtask) {
+        throw new UnsupportedOperationException("Cannot add subtask to BooleanTache");
+    }
+
+    public TacheBuilder setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+        progress= this.isCompleted()? 100 : 0;
+        
+        return this;
+    }
+    
+    @Override
+    public TacheBuilder setEstimatedDuration(int estimatedDuration) {
+        this.estimatedDuration = estimatedDuration;
+        return this;
+    }
+
+    @Override
+    public TacheBuilder setProgress(int progress) {
+        this.progress = progress;
+        if (progress==100)
+        {
+			isCompleted=true;
+			}
+        else isCompleted=false;
+        return this;
+    }
+
+
+	@Override
+	public Tache build() {
+		
+		return this;
+	}
 
 
 

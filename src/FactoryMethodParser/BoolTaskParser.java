@@ -6,7 +6,9 @@ import org.w3c.dom.Element;
 
 import projetXml.BoolTache;
 import projetXml.Priorite;
+import projetXml.SimpleTache;
 import projetXml.Tache;
+import projetXml.TacheBuilder;
 
 public class BoolTaskParser implements TaskParser {
 
@@ -17,7 +19,19 @@ public class BoolTaskParser implements TaskParser {
         Priorite priorite = Priorite.valueOf(taskElement.getElementsByTagName("priorite").item(0).getTextContent());
         int estimatedDuration = Integer.parseInt(taskElement.getElementsByTagName("estimatedDuration").item(0).getTextContent());
         boolean isCompleted = Boolean.parseBoolean(taskElement.getElementsByTagName("isCompleted").item(0).getTextContent());
-        return new BoolTache(description, deadline, priorite, estimatedDuration, 0, isCompleted);
-    }
+        
+   
+    
+    TacheBuilder builder = new BoolTache(); // Utiliser le bon TacheBuilder
+    Tache task = ((BoolTache) builder
+            .setDescription(description)
+            .setDateEcheance(deadline)
+            .setPriorite(priorite)
+            .setEstimatedDuration(estimatedDuration))
+            .setCompleted(isCompleted)
+            .build();
+
+    return task;
+}
 }
 

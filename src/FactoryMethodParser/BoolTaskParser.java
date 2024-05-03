@@ -10,7 +10,7 @@ import projetXml.SimpleTache;
 import projetXml.Tache;
 import projetXml.TacheBuilder;
 
-public class BoolTaskParser implements TaskParser {
+public class BoolTaskParser implements ITaskParserFactory {
 
     @Override
     public Tache parseTask(Element taskElement) {

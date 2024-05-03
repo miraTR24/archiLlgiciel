@@ -11,5 +11,4 @@ public interface ToDoList {
     List<Tache> getAllTasks();
     void displayTasks() ;
     
-    public abstract void acceptVistor(ToDoListVisitor toDoList, String pathname);
 }

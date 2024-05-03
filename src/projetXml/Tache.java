@@ -13,6 +13,6 @@ public abstract class Tache {
 	    public abstract Priorite getPriorite();
 	    public abstract int getProgress();
 	    public abstract int getEstimatedDuration();
-	    public abstract void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname);
+	    public abstract void acceptVistor(ToDoListVisitor toDoListVisitor);
 	    public abstract void display(); // Afficher la tâche
 }

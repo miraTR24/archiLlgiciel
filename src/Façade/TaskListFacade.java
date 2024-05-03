@@ -53,8 +53,4 @@ public class TaskListFacade {
         return taskDescriptions;
     }
 
-    public void saveTaskListToFile(String filePath) {
-        EnregistrerVisitor visitor = new EnregistrerVisitor();
-        visitor.visitorTodoListImpl(todoList, filePath);
-    }
 }

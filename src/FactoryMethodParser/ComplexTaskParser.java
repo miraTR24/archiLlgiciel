@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComplexTaskParser implements TaskParser {
+public class ComplexTaskParser implements ITaskParserFactory {
 
 	@Override
 	public Tache parseTask(Element taskElement) {

@@ -4,6 +4,6 @@ import org.w3c.dom.Element;
 
 import projetXml.Tache;
 
-public interface TaskParser {
+public interface ITaskParserFactory {
     Tache parseTask(Element taskElement);
 }

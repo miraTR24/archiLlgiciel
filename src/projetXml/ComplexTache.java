@@ -90,10 +90,10 @@ public class ComplexTache extends Tache  implements TacheBuilder{
     }
 
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
 		
-		name = pathname;
-		toDoListVisitor.visitorComplexTache(this, pathname);
+		
+		toDoListVisitor.visitorComplexTache(this);
 		
 	}
 	@Override

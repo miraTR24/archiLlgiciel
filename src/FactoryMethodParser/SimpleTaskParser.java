@@ -8,7 +8,7 @@ import projetXml.TacheBuilder;
 
 import java.time.LocalDate;
 
-public class SimpleTaskParser implements TaskParser {
+public class SimpleTaskParser implements ITaskParserFactory {
 
     @Override
     public Tache parseTask(Element taskElement) {

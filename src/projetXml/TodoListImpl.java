@@ -49,18 +49,7 @@ public class TodoListImpl implements ToDoList {
         System.out.println("=================");
     }
 
-    @Override
-    public void acceptVistor(ToDoListVisitor visitor, String pathname) {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            this.document = db.newDocument();
-            this.name = pathname;
-            visitor.visitorTodoListImpl(this, pathname);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+  
 
     @Override
     public void removeTaskById(int taskId) {

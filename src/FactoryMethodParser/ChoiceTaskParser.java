@@ -1,9 +1,10 @@
 package FactoryMethodParser;
 
-public class TaskParserFactory {
+public class ChoiceTaskParser {
 
-    public static TaskParser getParser(String taskType) {
-        switch (taskType) {
+    public static ITaskParserFactory getParser(String taskType) {
+       	
+    	switch (taskType) {
             case "simpleTask":
                 return new SimpleTaskParser();
             case "booleanTask":
@@ -14,4 +15,6 @@ public class TaskParserFactory {
                 throw new IllegalArgumentException("ce type de tache existe pas: " + taskType);
         }
     }
+    
+    
 }

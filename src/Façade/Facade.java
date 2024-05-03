@@ -28,6 +28,7 @@ import projetXml.BoolTache;
 import projetXml.ComplexTache;
 import projetXml.EnregistrerVisitor;
 import projetXml.Priorite;
+import projetXml.SaveToDoList;
 import projetXml.SimpleTache;
 import projetXml.Tache;
 import projetXml.TacheBuilder;
@@ -43,7 +44,8 @@ public class Facade extends JFrame implements IFacade {
     
     public Facade(TodoListImpl todoList, DefaultTableModel model) {
         super("Gestionnaire de ToDoList");
-       this.todoList=todoList;
+      
+        this.todoList=todoList;
        this.model=model;
        
     }
@@ -148,8 +150,7 @@ public class Facade extends JFrame implements IFacade {
        
         if (task instanceof SimpleTache) {
         	   builder = factory.createSimpleTache();
-        	   
-               modifyPanel.add(new JLabel("Échéance :"));
+        	   modifyPanel.add(new JLabel("Échéance :"));
                modifyPanel.add(deadlineField);
 
               
@@ -670,8 +671,9 @@ public class Facade extends JFrame implements IFacade {
                 file = new File(file.getAbsolutePath() + ".xml");
             }
             try {
-                EnregistrerVisitor visitor = new EnregistrerVisitor();
-                todoList.acceptVistor(visitor, file.getAbsolutePath());
+            	SaveToDoList doList = new SaveToDoList();
+            	doList.saveListTache(todoList, file.getAbsolutePath());
+            
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement du fichier XML: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

@@ -37,7 +37,19 @@ public class XMLParser {
 
     public static Tache createTaskFromElement(Element taskElement) {
         String taskType = taskElement.getTagName();
-        TaskParser parser = TaskParserFactory.getParser(taskType);
-        return parser.parseTask(taskElement);
+        ITaskParserFactory parser ;
+    	switch (taskType) {
+        case "simpleTask":
+            parser= new SimpleTaskParser();
+        	return parser.parseTask(taskElement);
+        case "booleanTask":
+        	parser= new BoolTaskParser();
+        	return parser.parseTask(taskElement);
+        case "complexTask":
+            parser= new ComplexTaskParser();
+        	return parser.parseTask(taskElement);
+        default:
+            throw new IllegalArgumentException("ce type de tache existe pas: " + taskType);
+    	}    
     }
 }

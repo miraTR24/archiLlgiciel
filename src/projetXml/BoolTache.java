@@ -53,10 +53,10 @@ public class BoolTache extends Tache implements TacheBuilder {
 	}
 
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
 	
 			
-			toDoListVisitor.visitorBoolTache(this, pathname);
+			toDoListVisitor.visitorBoolTache(this);
 		
 	}
 	

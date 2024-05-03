@@ -15,6 +15,8 @@ public interface IFacade {
 	public void deleteTask(Tache task);
 	
 	
+	// console methode 
+	
 }
 	
 	

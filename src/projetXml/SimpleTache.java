@@ -45,10 +45,10 @@ public class SimpleTache extends Tache implements TacheBuilder {
     }
 
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor, String pathname) {
+	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
 		
-		name = pathname;
-		toDoListVisitor.visitorSimpleTache(this, pathname);
+	
+		toDoListVisitor.visitorSimpleTache(this);
 		
 	}
 	

@@ -23,8 +23,13 @@ public class EnregistrerVisitor implements ToDoListVisitor,Serializable{
 	
 	private Element ele;
 
+	public EnregistrerVisitor(Document document , Element ele ){
+		this.document= document; 
+	    this.ele= ele;
+	}
+	
 	@Override
-	public void visitorSimpleTache(SimpleTache simpleTache, String pathFile) {
+	public void visitorSimpleTache(SimpleTache simpleTache) {
 	    try {
 	        Element simpleTaskElement = document.createElement("simpleTask");
 	        
@@ -44,7 +49,7 @@ public class EnregistrerVisitor implements ToDoListVisitor,Serializable{
 
 
 	@Override
-	public void visitorBoolTache(BoolTache boolTache, String pathFile) {
+	public void visitorBoolTache(BoolTache boolTache) {
 	    try {
 	        Element booleanTaskElement = document.createElement("booleanTask");
 	        
@@ -64,7 +69,7 @@ public class EnregistrerVisitor implements ToDoListVisitor,Serializable{
 
 
 	@Override
-    public void visitorComplexTache(ComplexTache complexTache, String pathFile) {
+    public void visitorComplexTache(ComplexTache complexTache) {
         try {
             Element complexTaskElement = document.createElement("complexTask");
 
@@ -75,11 +80,11 @@ public class EnregistrerVisitor implements ToDoListVisitor,Serializable{
             appendTextElement(document, complexTaskElement, "progress", String.valueOf(complexTache.getProgress()));
 
             Element subTasksElement = document.createElement("subTasks");
+            EnregistrerVisitor subVisitor = new EnregistrerVisitor(document,subTasksElement);
+
             for (Tache subTask : complexTache.getSubTaches()) {
-                EnregistrerVisitor subVisitor = new EnregistrerVisitor();
-                subVisitor.document = document;
-                subVisitor.ele = subTasksElement;
-                subTask.acceptVistor(subVisitor, pathFile);
+               
+                subTask.acceptVistor(subVisitor);
             }
 
             complexTaskElement.appendChild(subTasksElement);
@@ -91,44 +96,7 @@ public class EnregistrerVisitor implements ToDoListVisitor,Serializable{
     }
 
 
-	@Override
-	public void visitorTodoListImpl(TodoListImpl todoList, String pathFile) {
-	    try {
-	        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	        DocumentBuilder builder = factory.newDocumentBuilder();
-	        
-	        document = builder.newDocument(); // Création du document
-	        ele = document.createElement("todoList");
-	        ele.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-	        ele.setAttribute("xsi:noNamespaceSchemaLocation", "ToDoList.xsd");
-	        document.appendChild(ele);
-	        
-	        for (Tache task : todoList.getAllTasks()) {
-	            if (task instanceof SimpleTache) {
-	                visitorSimpleTache((SimpleTache) task, pathFile);
-	            } else if (task instanceof BoolTache) {
-	                visitorBoolTache((BoolTache) task, pathFile);
-	            } else if (task instanceof ComplexTache) {
-	                visitorComplexTache((ComplexTache) task, pathFile);
-	            }
-	        }
-	        
-	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	        Transformer transformer = transformerFactory.newTransformer();
-	        DOMSource source = new DOMSource(document);
-	        StreamResult result = new StreamResult(new File(pathFile));
-	        transformer.transform(source, result); // Transformation et sauvegarde
-	        
-	    } catch (ParserConfigurationException e) {
-	        System.err.println("Erreur lors de la création du document XML: " + e.getMessage());
-	        e.printStackTrace();
-	    } catch (Exception e) {
-	        System.err.println("Erreur inattendue lors de l'enregistrement du document XML: " + e.getMessage());
-	        e.printStackTrace();
-	    }
-	}
-
-
+	
 	
 	private void appendTextElement(Document doc, Element parentElement, String tagName, String textContent) {
 	    Element element = doc.createElement(tagName);

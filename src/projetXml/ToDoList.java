@@ -11,6 +11,6 @@ public interface ToDoList {
     List<Tache> getAllTasks();
     void displayTasks() ;
     public void displayTopFiveTasks();
-    public void replaceTask(Tache oldTask, Tache newTask) 
+    public void replaceTask(Tache oldTask, Tache newTask) ;
     
 }

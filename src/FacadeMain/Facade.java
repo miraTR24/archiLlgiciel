@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 import FacadeConsole.LauncherConsole;
 import FacadeMain.IFacade;
-import Façade.LauncherApp;
+import FaçadeEditor.LauncherApp;
 
 public class Facade implements IFacade{
 

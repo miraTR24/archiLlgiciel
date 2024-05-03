@@ -1,7 +1,7 @@
 package FacadeConsole;
 
-import FactoryMethodParser.XMLParser;
-import projetXml.TodoListImpl;
+import ToDoListOperation.TodoListImpl;
+import XmlParser.XMLParser;
 
 public class Facade implements IFacade{
 

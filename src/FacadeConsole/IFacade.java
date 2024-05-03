@@ -1,6 +1,6 @@
 package FacadeConsole;
-import projetXml.ComplexTache;
-import projetXml.TodoListImpl;
+import ToDoListOperation.ComplexTache;
+import ToDoListOperation.TodoListImpl;
 public interface IFacade {
 	
 	

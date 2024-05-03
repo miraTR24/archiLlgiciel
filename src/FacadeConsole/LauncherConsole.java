@@ -17,9 +17,9 @@ public class LauncherConsole {
 	        while (running) {
 	            String msg = "#################### To Do List ##################\n" +
 	                         "Load XML File    ===>  load filename.xml \n" +
-	                         "Top five non-completed tasks    ===>  top5 filename.xml \n" +
+	                         "Top five des taches non complétées    ===>  top5 filename.xml \n" +
 	                         "Exit Program    ===>  exit \n" +
-	                         "Please choose a valid choice!";
+	                         "Choisissez une fonctionnalité!";
 	            
 	            System.out.println(msg); // Afficher le message d'accueil
 	            System.out.print("Votre commande : ");

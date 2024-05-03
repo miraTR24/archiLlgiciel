@@ -1,18 +1,11 @@
 package Client;
 
-import javax.swing.SwingUtilities;
-
-import Façade.LauncherApp;
+import FacadeMain.Facade; // Importer la classe Facade
+import FacadeMain.IFacade;
 
 public class MainClient {
-	
     public static void main(String[] args) {
-    	
-        SwingUtilities.invokeLater(() -> {
-            LauncherApp app = new LauncherApp();
-        });
-	
-
-}
-
+        IFacade facade = new Facade(); // Créer une instance de la Facade
+        facade.choix(); // Appeler la méthode choix() pour afficher le menu
+    }
 }

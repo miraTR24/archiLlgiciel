@@ -119,7 +119,7 @@ public class TodoListImpl implements ToDoList {
             .collect(Collectors.toList());
 
         List<Tache> top5EarliestTasks = sortedTasks.stream()
-            .limit(1)
+            .limit(5)
             .collect(Collectors.toList());
 
         System.out.println("Les 5 tâches non complétées avec les échéances les plus proches sont :");

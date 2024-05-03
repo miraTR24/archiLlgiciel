@@ -15,10 +15,10 @@ public class Facade implements IFacade{
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Choisissez l'application à utiliser:");
+        System.out.println("Choisissez l'application à utiliser :");
         System.out.println("1. Lancer l'application console");
         System.out.println("2. Lancer l'application editeur");
-
+        System.out.println("Entrez le numéro de votre choix : ");
         int choice = scanner.nextInt();
 
         switch (choice) {

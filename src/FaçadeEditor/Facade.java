@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -123,7 +124,7 @@ public class Facade extends JFrame implements IFacade {
         }
     }
     @Override 
-    public void modifyTask(Tache task) {
+    public void modifyTask(Tache task ) {
         TacheBuilder builder;
         
         JTextField deadlineField = new JTextField(task.getDeadline().toString());
@@ -242,6 +243,7 @@ public class Facade extends JFrame implements IFacade {
             modifyFrame.setSize(400, 300);
             modifyFrame.setLocationRelativeTo(this);
             JButton saveButton = new JButton("Enregistrer");
+            JButton SubButton = new JButton("Afficher sous-tâche");
             JPanel modifyPanel = new JPanel(new GridLayout(6, 2, 10, 10));
             modifyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             JTextField deadlineField = new JTextField(subtask.getDeadline().toString());
@@ -253,9 +255,11 @@ public class Facade extends JFrame implements IFacade {
             prioriteComboBox.setSelectedItem(subtask.getPriorite());
             modifyPanel.add(new JLabel("Priorité :"));
             modifyPanel.add(prioriteComboBox);
-            JTextField progressField = new JTextField(Integer.toString(subtask.getProgress()));
+            
+            
            
             if (subtask instanceof SimpleTache) {
+            	JTextField progressField = new JTextField(Integer.toString(subtask.getProgress()));
             	   builder = factory.createSimpleTache();
             	   modifyPanel.add(new JLabel("Échéance :"));
                    modifyPanel.add(deadlineField);                 
@@ -299,7 +303,13 @@ public class Facade extends JFrame implements IFacade {
                 });
                 
             } else if (subtask instanceof ComplexTache) {
+            	modifyPanel.add(SubButton);
                 builder = factory.createTacheComplexe(); 
+                SubButton.addActionListener(e -> {
+                	showSubtasks((ComplexTache) subtask);
+                	modifyFrame.setVisible(false);
+                	modifyFrame.dispose();
+                });
                         
                 saveButton.addActionListener(e -> {
                     // Utiliser le constructeur spécifique pour modifier les attributs de la tâche
@@ -360,10 +370,11 @@ public class Facade extends JFrame implements IFacade {
                 LocalDate subTaskDeadline = LocalDate.parse(JOptionPane.showInputDialog("Entrez la date d'échéance (AAAA-MM-JJ):"));
                 Priorite subTaskPriority = (Priorite) JOptionPane.showInputDialog(this, "Sélectionnez la priorité de la sous-tâche:", "Priorité", JOptionPane.QUESTION_MESSAGE, null, Priorite.values(), Priorite.HAUTE);
                 int subTaskDuration = Integer.parseInt(JOptionPane.showInputDialog("Entrez la durée estimée (en jours) de la sous-tâche:"));
-                int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
+              
                 Tache newSubtask = null;
                 switch (choice) {
                     case "Simple"://(subTaskDesc, subTaskDeadline, subTaskPriority, subTaskDuration, subTaskProgress);
+                    	  int subTaskProgress = Integer.parseInt(JOptionPane.showInputDialog("Entrez le pourcentage de progression de la sous-tâche:"));
                         builder=factory.createSimpleTache();
                         newSubtask = builder
                         	    .setDescription(subTaskDesc)
@@ -396,8 +407,7 @@ public class Facade extends JFrame implements IFacade {
                         		.setDescription(subTaskDesc)
                         		.setDateEcheance(subTaskDeadline)
                                 .setPriorite(subTaskPriority)
-                                .setEstimatedDuration(subTaskDuration)
-                                .setProgress(subTaskProgress))
+                                .setEstimatedDuration(subTaskDuration))
                                 .setSubTaches(subSubTasks)
                                 .build();
                     
@@ -429,13 +439,16 @@ public class Facade extends JFrame implements IFacade {
     
     
  
-
     public void showTaskDetails(Tache task) {
-    	
         JFrame detailsFrame = new JFrame("Détails de la tâche");
         detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         detailsFrame.setSize(400, 300);
         detailsFrame.setLocationRelativeTo(this);
+
+        // Panel principal pour contenir les détails de la tâche et les boutons
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        // Panel pour les détails de la tâche
         JPanel detailsPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         detailsPanel.add(new JLabel("Description :"));
@@ -447,23 +460,44 @@ public class Facade extends JFrame implements IFacade {
         detailsPanel.add(new JLabel("Priorité :"));
         detailsPanel.add(new JLabel(task.getPriorite().toString()));
         detailsPanel.add(new JLabel("Progression :"));
-        detailsPanel.add(new JLabel(task.getProgress() + "%"));
+        
+        // Panel pour organiser la barre de progression et le label horizontalement
+        JPanel progressPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JProgressBar progressField = new JProgressBar(0, 100);
+        progressField.setValue(task.getProgress());
+        progressPanel.add(progressField);
+        JLabel progressLabel = new JLabel(task.getProgress() + "%");
+        progressPanel.add(progressLabel);
+        detailsPanel.add(progressPanel);
+
+        // Panel pour les boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton modifyButton = new JButton("Modifier");
-  
         JButton deleteButton = new JButton("Supprimer");
         buttonPanel.add(modifyButton);
         buttonPanel.add(deleteButton);
-        modifyButton.addActionListener(e -> modifyTask(task));
-        deleteButton.addActionListener(e -> deleteTask(task));
-                 
+        modifyButton.addActionListener(e ->{modifyTask(task);
+										        detailsFrame.setVisible(false);
+										        detailsFrame.dispose();} );
+        deleteButton.addActionListener(e -> {deleteTask(task);
+										        detailsFrame.setVisible(false);
+										        detailsFrame.dispose();});
+
+        // Si la tâche est une tâche complexe, ajouter un bouton pour voir les sous-tâches
         if (task instanceof ComplexTache) {
             JButton viewSubtasksButton = new JButton("Voir les sous-tâches");
-            viewSubtasksButton.addActionListener(e -> showSubtasks((ComplexTache) task));
+            viewSubtasksButton.addActionListener(e -> {showSubtasks((ComplexTache) task);
+	        detailsFrame.setVisible(false);
+	        detailsFrame.dispose();}); 
             buttonPanel.add(viewSubtasksButton);
         }
-        detailsFrame.add(detailsPanel, BorderLayout.CENTER);
-        detailsFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Ajouter les panels au panel principal
+        mainPanel.add(detailsPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Ajouter le panel principal à la fenêtre
+        detailsFrame.add(mainPanel);
         detailsFrame.setVisible(true);
     }
 
@@ -498,7 +532,17 @@ public class Facade extends JFrame implements IFacade {
         buttonPanel.add(modifySubtaskButton);
         buttonPanel.add(deleteSubtaskButton);
         addSubtaskButton.addActionListener(e -> addSubtask(complexTask));
-        modifySubtaskButton.addActionListener(e -> modifySubtask(complexTask, subtasksTable.getSelectedRow()));
+        
+        modifySubtaskButton.addActionListener(e ->{
+        	  modifySubtask(complexTask, subtasksTable.getSelectedRow());
+        	  subtasksFrame.setVisible(false);
+        	  subtasksFrame.dispose();
+        	         	  
+        });
+        
+        
+      
+        
         deleteSubtaskButton.addActionListener(e -> deleteSubtask(complexTask, subtasksTable.getSelectedRow()));
 
         // Mise à jour du modèle de la table des sous-tâches

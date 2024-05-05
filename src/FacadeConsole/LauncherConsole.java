@@ -7,11 +7,22 @@ import FacadeConsole.Facade;
 import FacadeConsole.IFacade;
 import ToDoListOperation.TodoListImpl;
 
+/**
+ * @author KHICHA 
+ * @author TIRECHE
+ * Cette classe est responsable du démarrage de l'application de gestion de liste de tâches à partir de la console.
+ */
+
+
 public class LauncherConsole {
+	  /**
+     * Méthode principale qui lance l'application de gestion de liste de tâches à partir de la console.
+     */
 	  public static void start() {
-	        IFacade ifacade = new Facade();
-	        Scanner scanner = new Scanner(System.in);
-	        boolean running = true;
+		    IFacade ifacade = new Facade(); // Initialisation de la façade pour interagir avec le système de gestion de liste de tâches
+	        Scanner scanner = new Scanner(System.in); // Scanner pour lire l'entrée de l'utilisateur
+	        boolean running = true; // Variable pour contrôler l'exécution du programme
+
 	        TodoListImpl toDoList= new TodoListImpl();
 
 	        while (running) {
@@ -47,7 +58,7 @@ public class LauncherConsole {
 	                if (!fileName.toLowerCase().endsWith(".xml")) {
 	                    System.out.println("Erreur : le fichier doit avoir une extension .xml. Veuillez réessayer.");
 	                    System.out.println();
-	                    continue; // Recommencer la boucle
+	                    continue; 
 	                }
 
 	                File file = new File(fileName);

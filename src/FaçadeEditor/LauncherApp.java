@@ -1,7 +1,7 @@
 package FaçadeEditor;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,13 +28,15 @@ import ToDoListOperation.ComplexTache;
 import ToDoListOperation.Priorite;
 import ToDoListOperation.SimpleTache;
 import ToDoListOperation.Tache;
-import ToDoListOperation.TacheBuilder;
-import ToDoListOperation.TacheFactory;
 import ToDoListOperation.TodoListImpl;
-import ToDoListOperation.concreateTacheFactoryBuilder;
-import XmlExport.EnregistrerVisitor;
 import XmlParser.XMLParser;
 
+/**
+ * @author KHICHA
+ * @author TIRECHE
+ * Cette classe représente l'interface graphique de l'application de gestion de ToDoList.
+ * Elle fournit une interface utilisateur pour créer, modifier, importer et sauvegarder des tâches.
+ */
 public class LauncherApp extends JFrame {
 
     private JButton btnCreateSimple, btnCreateBoolean, btnCreateComplex, btnImportXML, btnSave;
@@ -42,15 +44,35 @@ public class LauncherApp extends JFrame {
     JTable table;
     DefaultTableModel model;
     public TodoListImpl todoList;
+
+    /**
+     * Constructeur par défaut de l'application de gestion de ToDoList.
+     */
     public LauncherApp() {
         super("Gestionnaire de ToDoList");
-      
-      todoList = new TodoListImpl();
-   
+        todoList = new TodoListImpl();
         createUI();
-        
     }
 
+    /**
+     * Initialise et configure l'interface graphique de l'application.
+     */
+    public void createUI() {
+        try {
+            setLayout(new BorderLayout());
+            setupMainTable();
+            setupButtonsPanel();
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(800, 400);
+            setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'importation du fichier XML: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Configure la table principale de l'interface graphique.
+     */
     public void setupMainTable() {
         model = new DefaultTableModel(new String[]{"ID", "Description", "Type", "Échéance", "Priorité", "Progression"}, 0);
         table = new JTable(model);
@@ -66,22 +88,10 @@ public class LauncherApp extends JFrame {
         add(new JScrollPane(table), BorderLayout.CENTER);
         facade = new Facade(todoList,model);
     }
-    private void createUI() {
-      try {
-    	  setLayout(new BorderLayout());
-          setupMainTable();
-          setupButtonsPanel();
-          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          setSize(800, 400);
 
-          setVisible(true);
-	} catch (Exception e) {
-		 JOptionPane.showMessageDialog(this, "Erreur lors de l'importation du fichier XML: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-
-	}  
-    }
-
-
+    /**
+     * Configure le panneau de boutons de l'interface graphique.
+     */
     private void setupButtonsPanel() {
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnCreateSimple = new JButton("Créer Tâche Simple");
@@ -98,6 +108,9 @@ public class LauncherApp extends JFrame {
         attachEventHandlers();
     }
 
+    /**
+     * Attache les gestionnaires d'événements aux boutons de l'interface graphique.
+     */
     private void attachEventHandlers() {
         btnCreateSimple.addActionListener(e -> facade.createSimpleTask());
         btnCreateBoolean.addActionListener(e -> facade.createBooleanTask());
@@ -105,8 +118,5 @@ public class LauncherApp extends JFrame {
         btnImportXML.addActionListener(e -> facade.importXML());
         btnSave.addActionListener(e -> facade.saveToDoList());
     }
-    
-    
 
-
-    }
+}

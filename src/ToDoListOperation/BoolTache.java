@@ -2,8 +2,16 @@ package ToDoListOperation;
 
 import java.time.LocalDate;
 
-import XmlExport.ToDoListVisitor;
-
+import XmlExport.IToDoListVisitor;
+/**
+ * Cette classe représente une tâche booléenne dans une liste de tâches.
+ * Elle implémente l'interface TacheBuilder pour la construction de tâches.
+ * 
+ * Elle hérite de la classe abstraite Tache.
+ * 
+ * @author Khicha
+ * @author Tireche
+ */
 public class BoolTache extends Tache implements TacheBuilder {
 	private int id=0;
 	private String description;
@@ -13,9 +21,13 @@ public class BoolTache extends Tache implements TacheBuilder {
     private int progress;
     private boolean isCompleted;
 
+    /**
+     * Constructeur par défaut qui initialise l'ID de la tâche.
+     */
     public BoolTache() {
     	this.id=Tache.idCounter++;
     }
+    // Implémentation des méthodes abstraites de la classe Tache...
 
     @Override
     public int getId() {
@@ -37,25 +49,29 @@ public class BoolTache extends Tache implements TacheBuilder {
         return priorite;
     }
     
-    // Getter pour isCompleted
+    /**
+     * Récupère l'état de complétion de la tâche.
+     * @return true si la tâche est complétée, sinon false.
+     */
     public boolean isCompleted() {
         return isCompleted;
     }
 
-
-	@Override
-	public int getProgress() {
-		
-		return this.isCompleted()? 100 : 0;
-	}
-
+    /**
+     * Récupère le progrès de la tâche.
+     * @return Le progrès de la tâche (100 si complétée, 0 sinon).
+     */
+    @Override
+    public int getProgress() {
+        return this.isCompleted() ? 100 : 0;
+    }
 	@Override
 	public int getEstimatedDuration() {
 		 return estimatedDuration;
 	}
 
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
+	public void acceptVistor(IToDoListVisitor toDoListVisitor) {
 	
 			
 			toDoListVisitor.visitorBoolTache(this);
@@ -71,6 +87,8 @@ public class BoolTache extends Tache implements TacheBuilder {
         System.out.println("Estimated Duration : " + getEstimatedDuration());
         System.out.println("Completed : " + isCompleted());
     }
+
+    // Implémentation des méthodes de l'interface TacheBuilder pour la construction de la tâche...
 
     @Override
     public TacheBuilder setDescription(String description) {
@@ -120,12 +138,14 @@ public class BoolTache extends Tache implements TacheBuilder {
     }
 
 
-	@Override
-	public Tache build() {
-		
-		return this;
-	}
-
+    /**
+     * Construit et retourne la tâche booléenne.
+     * @return La tâche booléenne construite.
+     */
+    @Override
+    public Tache build() {
+        return this;
+    }
 
 
 }

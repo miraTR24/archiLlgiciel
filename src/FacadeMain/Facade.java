@@ -8,16 +8,23 @@ import FacadeConsole.LauncherConsole;
 import FacadeMain.IFacade;
 import FaçadeEditor.LauncherApp;
 
-public class Facade implements IFacade{
+/**
+ * @author KHICHA
+ * @author TIRECHE
+ * La classe <code>Facade</code> implémente l'interface <code>IFacade</code> et permet à l'utilisateur de choisir quelle application utiliser.
+ */
+public class Facade implements IFacade {
 
-	@Override
-	public void choix() {
-
+    /**
+     * Permet à l'utilisateur de choisir quelle application utiliser.
+     */
+    @Override
+    public void choix() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Choisissez l'application à utiliser :");
         System.out.println("1. Lancer l'application console");
-        System.out.println("2. Lancer l'application editeur");
+        System.out.println("2. Lancer l'application éditeur");
         System.out.println("Entrez le numéro de votre choix : ");
         int choice = scanner.nextInt();
 
@@ -28,10 +35,10 @@ public class Facade implements IFacade{
                 break;
 
             case 2:
-                // Lancer l'application editeur
+                // Lancer l'application éditeur
                 SwingUtilities.invokeLater(() -> {
-                    LauncherApp app = new LauncherApp(); 
-                    app.setVisible(true); 
+                    LauncherApp app = new LauncherApp();
+                    app.setVisible(true);
                 });
                 break;
 
@@ -41,7 +48,6 @@ public class Facade implements IFacade{
         }
 
         scanner.close(); // Fermer le scanner
-		
-	}
+    }
 
 }

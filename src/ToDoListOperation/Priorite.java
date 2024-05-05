@@ -1,7 +1,24 @@
 package ToDoListOperation;
 
+/**
+ * Cette énumération définit les différents niveaux de priorité pour les tâches.
+ * @author KHICHA
+ * @author TIRECHE
+ */
 public enum Priorite {
-	
-	HAUTE, MOYENNE, BASSE;
+    
+    /**
+     * Priorité élevée.
+     */
+    HAUTE,
 
+    /**
+     * Priorité moyenne.
+     */
+    MOYENNE,
+
+    /**
+     * Priorité basse.
+     */
+    BASSE;
 }

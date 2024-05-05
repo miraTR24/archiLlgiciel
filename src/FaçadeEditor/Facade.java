@@ -30,18 +30,23 @@ import ToDoListOperation.Priorite;
 import ToDoListOperation.SimpleTache;
 import ToDoListOperation.Tache;
 import ToDoListOperation.TacheBuilder;
-import ToDoListOperation.TacheFactory;
+import ToDoListOperation.ITacheFactory;
 import ToDoListOperation.TodoListImpl;
-import ToDoListOperation.concreateTacheFactoryBuilder;
-import XmlExport.EnregistrerVisitor;
+import ToDoListOperation.concreateTacheFactory;
+import XmlExport.IToDoListVisitorImp;
 import XmlExport.SaveToDoList;
 import XmlParser.XMLParser;
 
+/**
+ * @author Khicha
+ * @author Tireche
+ * Cette classe implémente l'interface IFacade pour fournir une façade simplifiée pour interagir avec une liste de tâches.
+ */
 public class Facade extends JFrame implements IFacade {
     public JTable subtasksTable;
     private DefaultTableModel model, subtasksModel;
     private TodoListImpl todoList;
-    private TacheFactory factory = new concreateTacheFactoryBuilder();
+    private ITacheFactory factory = new concreateTacheFactory();
     
     public Facade(TodoListImpl todoList, DefaultTableModel model) {
         super("Gestionnaire de ToDoList");
@@ -50,7 +55,10 @@ public class Facade extends JFrame implements IFacade {
        this.model=model;
        
     }
-    
+    /**
+     * Crée une tâche complexe.
+     * @param subTasks pour ajouter la tâche complexe à la liste des sous tâches 
+     */ 
     public void createComplexTask(List<Tache> subTasks) {
         try {
         	TacheBuilder builder;
@@ -123,6 +131,10 @@ public class Facade extends JFrame implements IFacade {
             JOptionPane.showMessageDialog(this, "Faites attention au remplissage.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+    /**
+     * Modifie une tâche existante.
+     * @param task La tâche à modifier.
+     */
     @Override 
     public void modifyTask(Tache task ) {
         TacheBuilder builder;
@@ -230,7 +242,11 @@ public class Facade extends JFrame implements IFacade {
         modifyFrame.add(modifyPanel);
         modifyFrame.setVisible(true);
     }
-
+    /**
+     * Modifie une sous tâche existante.
+     * @param complexTask La tâche complexe  à modifier.
+     * @param selectedRow la sous tâches selectionnée. 
+     */
     public void modifySubtask(ComplexTache complexTask, int selectedRow) {
     	
         if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {
@@ -346,7 +362,10 @@ public class Facade extends JFrame implements IFacade {
         }
     }
 
-    
+    /**
+     * Crée une tâche complexe.
+     */
+
     @Override 
     public void createComplexTask() {
         try {
@@ -434,11 +453,11 @@ public class Facade extends JFrame implements IFacade {
         }
     }
 
-    // Méthode pour créer les sous-tâches complexes de manière récursive
-    
-    
-    
- 
+   
+    /**
+     * Afficher les détailles une tâche existante.
+     * @param task La tâche à afficher.
+     */
     public void showTaskDetails(Tache task) {
         JFrame detailsFrame = new JFrame("Détails de la tâche");
         detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -501,7 +520,10 @@ public class Facade extends JFrame implements IFacade {
         detailsFrame.setVisible(true);
     }
 
-  
+    /**
+     * Supprime une tâche de la liste.
+     * @param task La tâche à supprimer.
+     */
     @Override
     public void deleteTask(Tache task) {
         int confirm = JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer cette tâche ?", "Confirmation", JOptionPane.YES_NO_OPTION);
@@ -512,8 +534,10 @@ public class Facade extends JFrame implements IFacade {
     }
     
     
-    
-
+    /**
+     * Afficher les détailles une tâche complexe  existante.
+     * @param complexTask La tâche à afficher.
+     */
     public void showSubtasks(ComplexTache complexTask) {
         JFrame subtasksFrame = new JFrame("Sous-tâches");
         subtasksFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -552,7 +576,10 @@ public class Facade extends JFrame implements IFacade {
         subtasksFrame.add(buttonPanel, BorderLayout.SOUTH);
         subtasksFrame.setVisible(true);
     }
-
+	/**
+	 * Ajouter sous tâche sélectionnée.
+	 * @param complexTask la tâche complexe mére de la sous tâche à ajouter
+	 */
     private void addSubtask(ComplexTache complexTask) {
        try {
     	   TacheBuilder builder;
@@ -617,7 +644,11 @@ public class Facade extends JFrame implements IFacade {
         	 }
     			}
 
-
+	/**
+	 * Supprimer sous tâche sélectionnée.
+	 * @param selectedRow la sous tâche sélectionnée.
+	 * @param complexTask la tâche complexe mére de la sous tâche
+	 */
     private void deleteSubtask(ComplexTache complexTask, int selectedRow) {
         if (selectedRow >= 0 && selectedRow < complexTask.getSubTaches().size()) {
             complexTask.getSubTaches().remove(selectedRow);
@@ -627,6 +658,10 @@ public class Facade extends JFrame implements IFacade {
         }
     }
 
+	/**
+	 * Mette à jour la table des sous tâches .
+	 * @param complexTask la tâche complexe mére des sous tâches
+	 */
     private void updateSubtasksTableModel(ComplexTache complexTask) {
     	  model.setRowCount(0);
           int index = 1;
@@ -637,6 +672,9 @@ public class Facade extends JFrame implements IFacade {
         }
         updateTableModel();
     }
+    /**
+     * Crée une tâche simple.
+     */
     @Override
 	public void createSimpleTask() {
     	try {TacheBuilder builder;
@@ -662,6 +700,9 @@ public class Facade extends JFrame implements IFacade {
 		}
  
     }
+    /**
+     * Crée une tâche booléenne.
+     */
     @Override
 	public void createBooleanTask() {
     	try {
@@ -687,6 +728,9 @@ public class Facade extends JFrame implements IFacade {
 	}
 
     }
+    /**
+     * Importe une liste de tâches depuis un fichier XML.
+     */
     @Override
 	public void importXML() {
         JFileChooser fileChooser = new JFileChooser();
@@ -703,6 +747,9 @@ public class Facade extends JFrame implements IFacade {
             }
         }
     }
+    /**
+     * Sauvegarde la liste de tâches sous forme XML.
+     */
 @Override
     public void saveToDoList() {
         JFileChooser fileChooser = new JFileChooser();
@@ -722,8 +769,10 @@ public class Facade extends JFrame implements IFacade {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement du fichier XML: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
+	    }
+	/**
+	 * Mette à jour la table des taches .
+	 */
     private void updateTableModel() {
         model.setRowCount(0);
         int index = 1;

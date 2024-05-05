@@ -1,8 +1,14 @@
 package ToDoListOperation;
 
 import java.time.LocalDate;
+/**
+ * Cette classe représente une tâche simple dans une liste de tâches.
+ * Elle implémente l'interface TacheBuilder pour la construction de tâches.
+ * @author Khicha 
+ * @author Tireche 
+ */
 
-import XmlExport.ToDoListVisitor;
+import XmlExport.IToDoListVisitor;
 
 public class SimpleTache extends Tache implements TacheBuilder {
 
@@ -12,6 +18,11 @@ public class SimpleTache extends Tache implements TacheBuilder {
     private Priorite priorite;
     private int estimatedDuration;
     private int progress;
+    
+
+    /**
+     * Constructeur par défaut qui initialise l'ID de la tâche.
+     */
 
     public SimpleTache() {
     
@@ -45,14 +56,21 @@ public class SimpleTache extends Tache implements TacheBuilder {
         return progress;
     }
 
+    /**
+     * Accepte un visiteur pour cette tâche simple.
+     * @param toDoListVisitor Le visiteur à accepter.
+     */
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
+	public void acceptVistor(IToDoListVisitor toDoListVisitor) {
 		
 	
 		toDoListVisitor.visitorSimpleTache(this);
 		
 	}
 	
+	  /**
+     * Affiche les détails de la tâche simple.
+     */	
 	   @Override
 	    public void display() {
 		   System.out.println("Id : " + getId());
@@ -97,7 +115,10 @@ public class SimpleTache extends Tache implements TacheBuilder {
 	        this.progress = progress;
 	        return this;
 	    }
-
+	    /**
+	     * Construit et retourne la tâche simple.
+	     * @return La tâche simple construite.
+	     */
 	@Override
 	public Tache build() {
 		

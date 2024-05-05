@@ -1,11 +1,23 @@
 package ToDoListOperation;
 
 import java.time.LocalDate;
+
 import java.util.List;
 
-import XmlExport.ToDoListVisitor;
+import XmlExport.IToDoListVisitor;
 
 import java.util.ArrayList;
+/**
+ * Cette classe représente une tâche complexe dans une liste de tâches.
+ * Elle implémente l'interface TacheBuilder pour la construction de tâches.
+ * 
+ * Elle hérite de la classe abstraite Tache.
+ * 
+ * Elle gère une liste de sous-tâches.
+ * 
+ *  @author KHICHA
+ *  @author Tireche
+ */
 
 public class ComplexTache extends Tache  implements TacheBuilder{
 	private int id=0;
@@ -16,6 +28,9 @@ public class ComplexTache extends Tache  implements TacheBuilder{
     private int progress; // Progression en pourcentage
     private List<Tache> subTaches; // Sous-tâches
 
+    /**
+     * Constructeur par défaut qui initialise l'ID de la tâche et la liste des sous-tâches.
+     */
     public ComplexTache() {
        
         this.id=Tache.idCounter++;
@@ -23,6 +38,12 @@ public class ComplexTache extends Tache  implements TacheBuilder{
 
     }
 
+    // Implémentation des méthodes abstraites de la classe Tache...
+
+    /**
+     * Récupère la liste des sous-tâches.
+     * @return La liste des sous-tâches.
+     */
     @Override
     public String getDescription() {
         return description;
@@ -80,8 +101,10 @@ public class ComplexTache extends Tache  implements TacheBuilder{
         return subTaches;
     }
 
-    // Calcul de l'échéance en prenant la date la plus grande parmi les sous-tâches
-    public LocalDate calculateDeadline() {
+    /**
+     * Calcul de l'échéance en prenant la date la plus grande parmi les sous-tâches.
+     * @return La date d'échéance calculée.
+     */    public LocalDate calculateDeadline() {
         LocalDate maxDeadline = null;
         for (Tache subTache : subTaches) {
             if (maxDeadline == null || subTache.getDeadline().isAfter(maxDeadline)) {
@@ -92,7 +115,7 @@ public class ComplexTache extends Tache  implements TacheBuilder{
     }
 
 	@Override
-	public void acceptVistor(ToDoListVisitor toDoListVisitor) {
+	public void acceptVistor(IToDoListVisitor toDoListVisitor) {
 		
 		
 		toDoListVisitor.visitorComplexTache(this);
@@ -163,7 +186,10 @@ public class ComplexTache extends Tache  implements TacheBuilder{
 	        this.subTaches = subTaches;
 	        return this;
 	    }
-
+	    /**
+	     * Construit et retourne la tâche complexe.
+	     * @return La tâche complexe construite.
+	     */
 	@Override
 	public Tache build() {
 		 if (description.length() > 20) {

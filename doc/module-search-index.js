@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"projetXml"}];updateSearchResults();
+moduleSearchIndex = [{"l":"projet_AL_KHICHA_TIRECHE"}];updateSearchResults();

@@ -4,7 +4,7 @@
 /**
  * 
  */
-module projetXml {
+module projet_AL_KHICHA_TIRECHE  {
     requires java.xml;
     requires java.desktop;
 
